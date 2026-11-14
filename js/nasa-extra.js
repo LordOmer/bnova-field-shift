@@ -46,13 +46,32 @@
     return { year, monthly };
   }
 
+  // 15 x 15 elevation grid (~2 km x 2 km, row 0 = north) for the 3D view of a custom location.
+  async function fetchTerrain(lat, lon, n = 15, span = 2000) {
+    const dLat = span / 111320 / (n - 1), dLon = span / (111320 * Math.cos(lat * Math.PI / 180)) / (n - 1);
+    const locations = [];
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++)
+      locations.push({ latitude: +(lat + ((n - 1) / 2 - i) * dLat).toFixed(5), longitude: +(lon + (j - (n - 1) / 2) * dLon).toFixed(5) });
+    const c = new AbortController(), id = setTimeout(() => c.abort(), 20000);
+    try {
+      const r = await fetch("https://api.open-elevation.com/api/v1/lookup", {
+        method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ locations }), signal: c.signal
+      });
+      if (!r.ok) throw new Error(`elevation ${r.status}`);
+      const z = (await r.json()).results.map(x => x.elevation);
+      if (z.length !== n * n) throw new Error("bad grid");
+      return { n, span, z };
+    } finally { clearTimeout(id); }
+  }
+
   // Months with low satellite greenness (likely bare or dormant land around the point).
   function lowGreenMonths(ndvi, threshold = 0.3) {
     if (!ndvi) return [];
     return ndvi.monthly.map((v, i) => (v !== null && v < threshold ? i + 1 : null)).filter(Boolean);
   }
 
-  const api = { fetchSlope, fetchNdvi, lowGreenMonths };
+  const api = { fetchSlope, fetchNdvi, fetchTerrain, lowGreenMonths };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.NasaExtra = api;
 })(typeof window !== "undefined" ? window : globalThis);

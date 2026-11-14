@@ -57,8 +57,47 @@
     }
     $("glossary").innerHTML = t("gloss").map(([w, d]) => `<details><summary>${esc(w)}</summary><p>${esc(d)}</p></details>`).join("");
     $("limits").innerHTML = t("limits").map(x => `<li>${x}</li>`).join("");
+    $("f3dLegend").innerHTML = `<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw soil"></i>${t("f3dSoil")}</span><span><i class="sw drop"></i>${t("f3dDropOk")}</span><span><i class="sw drop bad"></i>${t("f3dDropBad")}</span>`;
+    $("f3dPlay").textContent = window.Field3D && window.Field3D.playing ? t("f3dPause") : t("f3dPlayBtn");
     $("tlLegend").innerHTML = `<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw bare"></i>${t("tl_bare")}</span>`;
     if (lastStatus) setStatus(lastStatus.key, lastStatus.vars, lastStatus.err);
+  }
+
+  // ---------- 3D living field ----------
+  let f3dStrategies = null;
+  const presetId = c => { const p = PRESETS.find(q => q.lat === c.lat && q.lon === c.lon); return p ? p.id : null; };
+  function terrainFor(c) {
+    const id = presetId(c);
+    return (id && window.TERRAIN_DATA && window.TERRAIN_DATA[id]) || (c.extra && c.extra.terrain) || null;
+  }
+  function f3dDescribe(info) {
+    if (info.kind === "bare") return t("f3dBare", { r: info.rain });
+    return t(info.kind === "cover" ? "f3dCover" : "f3dMain", { crop: cname(info.crop), r: info.rain });
+  }
+  const f3dUI = {
+    t,
+    status: msg => { $("f3dNote").textContent = msg; },
+    terrain: h => {
+      $("f3dNote").textContent = h.flat ? t("f3dFlat") : t("f3dTerrain", { lo: Math.round(h.lo), hi: Math.round(h.hi), x: h.exag });
+    },
+    month: (k, infos) => {
+      const S = f3dStrategies; if (!S) return;
+      $("f3dSlider").value = k;
+      $("f3dMonth").textContent = t("f3dMonth", { y: Math.floor(k / 12) + 1, m: mon(R.AG[k % 12]) });
+      const lab = (s, info) => `<b>${esc(t("s_" + s.key))}</b> <span class="sc">${s.total}/100</span><br><span class="${info.kind === "bare" ? "bad" : "ok"}">${esc(f3dDescribe(info))}</span>`;
+      $("f3dA").innerHTML = lab(S[0], infos[0]);
+      $("f3dC").innerHTML = lab(S[1], infos[1]);
+    }
+  };
+  function draw3d(cmp) {
+    if (!window.Field3D) return;
+    const best = cmp.strategies.find(s => s.key === "optimized") || cmp.strategies[1];
+    f3dStrategies = [cmp.strategies[0], best];
+    const rains = R.AG.map(m => E.precipMm(climate, m - 1));
+    window.Field3D.update({
+      terrain: terrainFor(climate), strategies: f3dStrategies, months: R.AG,
+      rainOf: m => E.precipMm(climate, m - 1), maxRain: Math.max(...rains)
+    });
   }
 
   // ---------- controls ----------
@@ -107,6 +146,10 @@
   // SRTM slope + MODIS NDVI for the current point (live; Yalova is embedded)
   async function loadExtra(c) {
     c.extra = c.extra || {};
+    if (!terrainFor(c) && !c.extra.terrainErr && window.NasaExtra.fetchTerrain) {
+      window.NasaExtra.fetchTerrain(c.lat, c.lon).then(tr => { c.extra.terrain = tr; if (c === climate) render(); })
+        .catch(() => { c.extra.terrainErr = true; });
+    }
     if (c.extra.slope && c.extra.ndvi) { if (c === climate) { applySlope(); render(); } return; }
     const year = new Date().getFullYear() - 1;
     const [sl, nd] = await Promise.allSettled([
@@ -154,6 +197,7 @@
     drawCalendar(main, rec.window);
     const cmp = R.compareRotations(climate, seq, window.MAIN_CROPS, window.ROTATION_CROPS, { priorities: prios, irrigation, soil });
     drawComparison(cmp, main, prios, irrigation, soil);
+    draw3d(cmp);
     drawRecs(main, rec);
     drawTrends();
   }
@@ -411,6 +455,17 @@
     svg.append(el("text", { x: 4, y: T + 8, "font-size": 10, fill: "var(--rain)" }, t("rainYr")));
     svg.append(el("text", { x: W - R_ + 4, y: T + 8, "font-size": 10, fill: "var(--temp)" }, t("meanC")));
     $("trendChart").replaceChildren(svg);
+  }
+
+  if (window.Field3D) {
+    window.Field3D.mount($("field3d"), f3dUI);
+    $("f3dPlay").addEventListener("click", () => {
+      window.Field3D.setPlaying(!window.Field3D.playing);
+      $("f3dPlay").textContent = window.Field3D.playing ? t("f3dPause") : t("f3dPlayBtn");
+    });
+    $("f3dSlider").addEventListener("input", e => {
+      window.Field3D.setPlaying(false); $("f3dPlay").textContent = t("f3dPlayBtn"); window.Field3D.setMonth(+e.target.value);
+    });
   }
 
   // Deep link: ?loc=<preset id> (e.g. ?loc=nebraska&lang=tr) opens that preset directly

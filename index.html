@@ -106,6 +106,20 @@
       <div id="strategies" class="strategies"></div>
     </section>
 
+    <section class="card" id="f3dCard">
+      <h2 data-i18n="f3dTitle"></h2>
+      <p class="hint" data-i18n="f3dHint"></p>
+      <div class="f3d-labels"><div id="f3dA" class="f3d-lab"></div><div id="f3dC" class="f3d-lab"></div></div>
+      <div id="field3d" class="f3d"></div>
+      <div class="f3d-ctrl">
+        <button id="f3dPlay" type="button"></button>
+        <input id="f3dSlider" type="range" min="0" max="35" value="0" aria-label="Month">
+        <span id="f3dMonth" class="f3d-month"></span>
+      </div>
+      <div class="legend f3d-legend" id="f3dLegend"></div>
+      <p id="f3dNote" class="hint"></p>
+    </section>
+
     <section class="card">
       <h2 data-i18n="bareTitle"></h2>
       <p id="windowText" class="hint"></p>
@@ -132,10 +146,12 @@
   <script src="data/yalova.js"></script>
   <script src="data/crops.js"></script>
   <script src="data/presets.js"></script>
+  <script src="data/terrain.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/rotation.js"></script>
   <script src="js/nasa-extra.js"></script>
+  <script src="js/field3d.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

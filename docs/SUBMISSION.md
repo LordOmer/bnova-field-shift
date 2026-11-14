@@ -111,6 +111,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Add SMAP soil moisture and GPM IMERG extreme-rain data to move further from regional toward field-scale advice.
 
 ## Tools, languages, hardware
+- three.js r128 (MIT licence) from cdnjs for the 3D view; OpenTopoData public API for SRTM 30 m elevation grids.
 - **Languages:** HTML5, CSS3, JavaScript (no frameworks or external libraries), Python 3 (standard library only).
 - **Data access (all from the browser, no API keys):**
   - NASA POWER REST API.
@@ -153,6 +154,9 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Crop parameters (temperature ranges, water needs, nitrogen, residue, market scores) are approximate rules of thumb that local experts must check.
 - The tool has no soil pH, salinity, local pest data or real prices.
 - Scores compare options with each other. They are not yield forecasts.
+
+## 3D living field
+A 3D view puts the farmer's current rotation (A) next to the best different rotation (C) on the real terrain around the point: a 21 × 21 NASA SRTM 30 m elevation grid (~2 × 2 km, via OpenTopoData, embedded for presets; height exaggeration stated on screen). A 36-month slider (with play) colours the field by what covers it each month and lets that month's NASA POWER rainfall fall as drops: blue on plants, orange on bare soil. In Nebraska in December the left field is bare and orange drops hit it; the right one is protected by a rye + hairy vetch cover. Built with three.js r128 (MIT), loaded only when the section scrolls into view; without WebGL the rest of the app works unchanged.
 
 ## Example results – USA (embedded presets, USDA Cropland Data Layer + NASA data)
 The app opens on the Nebraska example by default; `?loc=iowa`, `?loc=kansas`, `?loc=yalova` open the others. Default settings: priorities nitrogen + erosion, limited irrigation, loamy soil.

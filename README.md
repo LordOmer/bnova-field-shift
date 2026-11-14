@@ -12,7 +12,8 @@ Many fields stay bare for months between main crops, and the same crop is often 
 3. **Your field's year**: monthly rain, temperature, frost days, heat spikes, root-zone soil wetness and MODIS NDVI, with the bare window highlighted.
 4. **Rotation comparison**: A = your current rotation, B = current + cover crops, C = best rotation found, D = alternative using different crops. The optimizer tests every distinct 3-year sequence of 10 main crops that keeps your year-1 crop (73 rotations) and fills each bare window with the best-fitting of 13 cover crops.
 5. **Explanations for every strategy**: why it was suggested, evidence (NASA numbers), benefits, information gaps and risks to check locally.
-6. **Climate trends**, glossary and an honest "Data, limits & honesty" section. English / Turkish.
+6. **Your field in 3D**: the real SRTM terrain around the point, today's rotation (A) next to the best different rotation (C), a 36-month slider with play; each month's NASA POWER rain falls as drops, orange where it hits bare soil.
+7. **Climate trends**, glossary and an honest "Data, limits & honesty" section. English / Turkish.
 
 ## Scoring (0–100, relative)
 Eight sub-scores, weighted by the farmer's priorities, water and soil:
@@ -29,7 +30,7 @@ Eight sub-scores, weighted by the farmer's priorities, water and soil:
 
 ## NASA data
 - [NASA POWER](https://power.larc.nasa.gov/), Agroclimatology community, monthly point API: `T2M`, `T2M_MAX`, `T2M_MIN`, `PRECTOTCORR`, `FROST_DAYS`, `GWETROOT`, `GWETTOP`, `EVPTRNS`, `ALLSKY_SFC_SW_DWN`, `RH2M`.
-- [SRTM](https://www.earthdata.nasa.gov/data/instruments/srtm) elevation via the [Open-Elevation](https://open-elevation.com/) API → slope.
+- [SRTM](https://www.earthdata.nasa.gov/data/instruments/srtm) elevation via the [Open-Elevation](https://open-elevation.com/) API → slope, and SRTM 30 m grids via [OpenTopoData](https://www.opentopodata.org/) → 3D terrain (`data/fetch_terrain.cjs` → `data/terrain.js`).
 - [MODIS](https://modis.gsfc.nasa.gov/) Terra MOD13Q1 NDVI (250 m, 16-day) via the [ORNL DAAC MODIS web service](https://modis.ornl.gov/data/modis_webservice.html) → monthly greenness, least-green (likely bare) months.
 
 ## Other data (from the challenge resources)
@@ -42,7 +43,8 @@ POWER is a ≈50 km grid, not field scale; soil wetness is modelled (MERRA-2); N
 - `index.html`, `css/style.css`
 - `js/engine.js` – climate helpers, single-window recommender, trends, NASA POWER loader (no DOM, testable in Node)
 - `js/rotation.js` – 3-year rotation timeline, cover-crop filling, scoring, optimizer (no DOM)
-- `js/nasa-extra.js` – SRTM slope and MODIS NDVI loaders
+- `js/nasa-extra.js` – SRTM slope, terrain grid and MODIS NDVI loaders
+- `js/field3d.js` – 3D living-field view (three.js r128 from cdnjs, loaded only when the section is visible)
 - `js/i18n.js` – English / Turkish text; `js/app.js` – UI (SVG charts, no libraries)
 - `data/yalova.js` – embedded NASA data for Yalova; `data/crops.js` – crop knowledge base (approximate)
 - `data/presets.js` – embedded NASA POWER, SRTM, MODIS (and USDA CDL for US) data for the presets, made by `data/fetch_presets.cjs`
@@ -55,4 +57,4 @@ Open `index.html` in a browser, or run `node .dev-server.cjs` and open http://lo
 Berrak, Nisa Nur (Industrial Engineering), Ömer (Computer Engineering).
 
 ## Tools & AI disclosure
-Plain HTML/CSS/JavaScript (no external libraries), Python standard library. An AI assistant (Claude, Anthropic) helped write code, fetch and summarize data, and draft text. All results were reviewed by the team. No AI-generated images. No NASA logos are used; no NASA endorsement implied.
+Plain HTML/CSS/JavaScript; the only external library is [three.js](https://threejs.org/) r128 (MIT licence, from cdnjs) for the 3D view. Python standard library and Node.js scripts for data downloads. An AI assistant (Claude, Anthropic) helped write code, fetch and summarize data, and draft text. All results were reviewed by the team. No AI-generated images. No NASA logos are used; no NASA endorsement implied.
