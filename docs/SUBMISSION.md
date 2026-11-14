@@ -155,9 +155,10 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Scores compare options with each other. They are not yield forecasts.
 
 ## Example results – USA (embedded presets, USDA Cropland Data Layer + NASA data)
-- **Nebraska – York County (40.95, −97.45):** the CDL shows corn every year 2019–2025. A (corn × 3) ≈50 → B (+ field pea cover) ≈71 → C corn → soybean → sunflower with covers ≈87.
-- **Iowa – Boone County (42.20, −93.80):** CDL corn/soybean alternation 2019–2025. A (corn → soy → corn) ≈61 → B (+ vetch/oat, lentil covers) ≈82 → C ≈89. MODIS: greenest in July, least green November–April (bare after harvest).
-- **Kansas – McPherson County (38.10, −98.00):** CDL wheat, double-crop wheat/soy, corn, soybeans. A (soy → wheat → wheat) ≈59 → C ≈84.
+The app opens on the Nebraska example by default; `?loc=iowa`, `?loc=kansas`, `?loc=yalova` open the others.
+- **Nebraska – York County (40.95, −97.45):** the CDL shows corn every year 2019–2025. NASA POWER: the field is bare ≈6 months a year and ≈197 mm of its 716 mm yearly rain falls on bare soil. A (corn × 3) ≈53 → B (+ vetch/oat winter cover) ≈78 → C corn → corn → soybean with winter cover ≈90. Trade-off shown openly: cover crops use stored soil water, so the irrigation need rises from ≈38 to ≈143 mm a year.
+- **Iowa – Boone County (42.20, −93.80):** CDL corn/soybean alternation 2019–2025. A ≈66 → B (same corn–soy + winter cover) ≈95, which is higher than any different rotation (C ≈94): the tool says the simplest step is adding a cover crop. MODIS: greenest in July, least green October–April.
+- **Kansas – McPherson County (38.10, −98.00):** CDL wheat, double-crop wheat/soy, corn, soybeans. A (soy → wheat → wheat) ≈59 → B ≈77 → C soybean → sorghum → sorghum with covers ≈87.
 
 ## Judging criteria
 - **Impact:** a free, phone-friendly tool that turns NASA data into rotation plans that cut bare-soil exposure (Yalova: ≈468 → ≈45 mm/yr of rain on bare soil) and add nitrogen; scale: Turkey loses ≈642 Mt of soil to erosion per year and has 2.32 million registered farmers; agriculture uses ≈79% of its water.

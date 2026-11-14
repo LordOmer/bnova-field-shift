@@ -4,8 +4,8 @@
   // Presets: Yalova (data/yalova.js) + Turkey/USA points with embedded data (data/presets.js) + custom
   const EMB = window.PRESET_DATA || [];
   const PRESETS = [
-    { name: "Yalova", country: "TR", lat: 40.64, lon: 29.33 },
-    ...EMB.map(p => ({ name: p.name, country: p.country, lat: p.lat, lon: p.lon })),
+    { id: "yalova", name: "Yalova", country: "TR", lat: 40.64, lon: 29.33 },
+    ...EMB.map(p => ({ id: p.id, name: p.name, country: p.country, lat: p.lat, lon: p.lon })),
     { name: null, country: null, lat: null, lon: null }
   ];
   const SCORE_KEYS = ["soil", "nitrogen", "organic", "water", "pest", "climate", "market", "forage"];
@@ -252,6 +252,7 @@
     let why;
     if (s.key === "current") why = t("why_current");
     else if (s.key === "current_cover") why = covers.length ? t("why_cover", { covers: coverNames }) : t("why_cover_none");
+    else if (s.key === "optimized" && cmp.strategies[1].total >= s.total) why = t("why_opt_b", { n: cmp.evaluated, prios: prioNames });
     else if (s.key === "optimized") why = t("why_opt", { n: cmp.evaluated, prios: prioNames, irr: t("irr_" + irrigation).toLowerCase() });
     else why = t("why_alt");
 
@@ -411,7 +412,19 @@
     $("trendChart").replaceChildren(svg);
   }
 
+  // Deep link: ?loc=<preset id> (e.g. ?loc=nebraska&lang=tr) opens that preset directly
+  let startLoc = null;
+  try { startLoc = new URLSearchParams(location.search).get("loc"); } catch (e) { /* ignore */ }
+  if (!startLoc) startLoc = "nebraska"; // default: US example with USDA crop history
+  const startIdx = startLoc ? PRESETS.findIndex(p => p.id === startLoc) : -1;
+  if (startIdx > 0) {
+    const p = PRESETS[startIdx];
+    $("preset").value = startIdx; $("lat").value = p.lat; $("lon").value = p.lon;
+    climate = cache[`${p.lat},${p.lon}`] || climate;
+    applyCdl();
+  }
   applySlope();
   render();
-  setStatus("st_embedded", { name: place(climate), period: climate.period });
+  if (startIdx > 0) { setStatus("st_showing", { name: place(climate), src: climate.source }); loadExtra(climate); }
+  else setStatus("st_embedded", { name: place(climate), period: climate.period });
 })();

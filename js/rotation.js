@@ -146,7 +146,8 @@
     for (const p of mains) {
       for (const m of p.crop.growMonths) {
         if (climate.monthly.T2M_MAX[m - 1] > p.crop.heatMax) heat.push({ crop: p.crop, month: m, tmax: climate.monthly.T2M_MAX[m - 1] });
-        if (p.crop.frost === "sensitive" && climate.monthly.FROST_DAYS[m - 1] >= 1) frost.push({ crop: p.crop, month: m, days: climate.monthly.FROST_DAYS[m - 1] });
+        // frost in the harvest (last) month does not hurt a mature crop
+        if (p.crop.frost === "sensitive" && m !== p.crop.growMonths[p.crop.growMonths.length - 1] && climate.monthly.FROST_DAYS[m - 1] >= 1) frost.push({ crop: p.crop, month: m, days: climate.monthly.FROST_DAYS[m - 1] });
       }
     }
     const riskPerYear = (heat.length + frost.length) / YEARS;

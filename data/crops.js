@@ -28,7 +28,7 @@
   { id: "maize", group: "maize", tr: "Mısır (silajlık)", en: "Silage maize", growMonths: [5, 6, 7, 8, 9], family: "grass", water: 550, nDemand: 3, organic: 2, market: 3, heatMax: 38, frost: "sensitive" },
   { id: "sunflower", tr: "Ayçiçeği", en: "Sunflower", growMonths: [4, 5, 6, 7, 8], family: "aster", water: 450, nDemand: 2, organic: 1, market: 3, heatMax: 38, frost: "sensitive" },
   { id: "chickpea_main", tr: "Nohut (yazlık)", en: "Chickpea (spring)", growMonths: [3, 4, 5, 6, 7], family: "legume", water: 300, nDemand: -1, organic: 1, market: 3, heatMax: 35, frost: "sensitive" },
-  { id: "corn_grain", group: "maize", tr: "Mısır (dane)", en: "Grain corn", growMonths: [4, 5, 6, 7, 8, 9, 10], family: "grass", water: 600, nDemand: 3, organic: 3, market: 3, heatMax: 38, frost: "sensitive" },
+  { id: "corn_grain", group: "maize", tr: "Mısır (dane)", en: "Grain corn", growMonths: [5, 6, 7, 8, 9, 10], family: "grass", water: 600, nDemand: 3, organic: 3, market: 3, heatMax: 38, frost: "sensitive" },
   { id: "soybean_main", tr: "Soya fasulyesi", en: "Soybean", growMonths: [5, 6, 7, 8, 9, 10], family: "legume", water: 500, nDemand: -1, organic: 1, market: 3, heatMax: 38, frost: "sensitive" },
   { id: "sorghum", tr: "Sorgum (dane)", en: "Grain sorghum", growMonths: [5, 6, 7, 8, 9, 10], family: "grass", water: 450, nDemand: 2, organic: 2, market: 2, heatMax: 40, frost: "sensitive" },
   { id: "tomato", tr: "Domates (tarla)", en: "Field tomato", growMonths: [4, 5, 6, 7, 8, 9], family: "nightshade", water: 600, nDemand: 3, organic: 0, market: 3, heatMax: 36, frost: "sensitive" },
