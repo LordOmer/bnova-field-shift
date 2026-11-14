@@ -106,6 +106,23 @@
       <div id="strategies" class="strategies"></div>
     </section>
 
+    <section class="card" id="dlCard">
+      <h2 data-i18n="dlTitle"></h2>
+      <p class="hint" data-i18n="dlHint"></p>
+      <div class="row">
+        <label><span data-i18n="dlMaxIrr"></span> <input id="dlMax" type="number" min="0" step="10" inputmode="numeric"></label>
+        <span class="note dl-wnote" data-i18n="dlWaterNote"></span>
+      </div>
+      <div class="row">
+        <fieldset id="dlForbid" class="dl-crops"><legend data-i18n="dlForbidden"></legend></fieldset>
+      </div>
+      <div class="row">
+        <fieldset id="dlReq" class="dl-crops"><legend data-i18n="dlRequired"></legend></fieldset>
+      </div>
+      <div id="dlOut" aria-live="polite"></div>
+      <p class="hint" data-i18n="dlNote"></p>
+    </section>
+
     <section class="card" id="f3dCard">
       <h2 data-i18n="f3dTitle"></h2>
       <p class="hint" data-i18n="f3dHint"></p>
@@ -151,6 +168,7 @@
   <script src="js/i18n.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/rotation.js"></script>
+  <script src="js/decision.js"></script>
   <script src="js/nasa-extra.js"></script>
   <script src="js/field3d.js"></script>
   <script src="js/app.js"></script>

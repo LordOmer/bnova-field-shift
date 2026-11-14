@@ -106,4 +106,30 @@ table.cmp { border-collapse: collapse; width: 100%; min-width: 520px; font-size:
 .chip.cold { background: #e3eefc; } .chip.hot { background: #fde7d6; }
 .f3d-lab .mini { font-size: .78rem; color: var(--muted); }
 .f3d-lab .mini.ok { color: #2f6fae; } .f3d-lab .mini.bad { color: #b4501f; }
+/* ---- Decision Lab ---- */
+.dl-wnote { flex: 1; min-width: 220px; }
+.dl-crops { width: 100%; }
+.dl-sum { margin: 8px 0 4px; }
+.dl-out ul { margin: 2px 0 6px; padding-left: 18px; font-size: .88rem; }
+.dl-box { border: 1px solid #e3e3dc; border-radius: 10px; padding: 8px 12px; margin: 8px 0; font-size: .9rem; }
+.dl-box.best { border: 2px solid var(--green); }
+.dl-box.none { border: 2px solid #e0a800; background: #fff8e1; }
+.dl-box h3 { margin: 0 0 2px; font-size: 1rem; }
+.dl-box p { margin: 2px 0; }
+.dl-a.ok { color: var(--green); } .dl-a.bad { color: #b4501f; }
+.dl-tag { background: var(--green-l); border-radius: 999px; padding: 1px 8px; font-size: .75rem; margin-left: 4px; }
+.dl-list { max-height: 340px; overflow: auto; border: 1px solid #eee; border-radius: 8px; margin: 8px 0; -webkit-overflow-scrolling: touch; }
+.dl-list table.cmp { min-width: 560px; font-size: .82rem; }
+.dl-list th { position: sticky; top: 0; background: #fff; z-index: 1; }
+.dl-list td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dl-list tr.off td { color: var(--muted); }
+.dl-list tr.off td.st { color: #b4501f; }
+.dl-list td.st.ok { color: var(--green); }
+.dl-ph { margin: 14px 0 4px; font-size: 1rem; }
+.dl-svg .dl-pt { cursor: pointer; }
+.dl-svg .dl-pt.on, .dl-svg .dl-pt:focus { stroke: #000; stroke-width: 3; opacity: 1; outline: none; }
+.dl-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #d9cfa6; opacity: .6; }
+.dl-dot.big { width: 14px; height: 14px; opacity: 1; border: 1.5px solid var(--ink); }
+.dl-grad { display: inline-block; width: 60px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, rgb(180,80,31), rgb(217,207,166), rgb(46,125,50)); }
+.dl-tip { min-height: 3em; background: var(--bg); border-radius: 8px; padding: 8px 10px; font-size: .86rem; margin: 6px 0; }
 .sw.drop.wash { background: #d08a45; } .sw.drop.spray { background: #9fd3ff; } .sw.water { background: rgba(47,143,255,.55); }

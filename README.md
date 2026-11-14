@@ -28,6 +28,24 @@ Eight sub-scores, weighted by the farmer's priorities, water and soil:
 | Climate risk | frost days (FROST_DAYS) in frost-sensitive crop months, heat spikes (T2M_MAX) above crop tolerance |
 | Market & income, animal feed | crop attributes |
 
+## Decision Lab (hard limits + Pareto)
+A separate card after the rotation comparison. It **filters** the 73 rotations the optimizer already scored; it never changes A/B/C/D, their scores, the timelines or the 3D view.
+
+- **Limits** (all optional): max. irrigation per year (mm), crops I will not grow, crops I must grow.
+  - The water limit is checked for **each agricultural year (Oct–Sep) of the 3-year cycle separately**: `max(W1, W2, W3) ≤ limit` (tolerance 1e-6, a plan exactly at the limit is feasible). A plan whose average is below the limit but one year is above it is removed. W is the model's irrigation need (crop need − rain in its months − stored soil water), including cover crops; each planting counts in the year it is sown. It is separate from the none / limited / plenty irrigation setting, which only changes the score weights.
+  - Forbidden / required crops apply to **main crops** only; a crop grown only as a cover crop does not count.
+  - Output: plans evaluated / feasible / removed, the 3 most common reasons, whether your current rotation (A) meets the limits, the best feasible plan by the normal overall score and how it differs from the next one, and a list of all plans with their yearly irrigation and the reason for removal.
+  - If nothing is feasible, no plan is recommended; it shows what to relax (the lowest working water limit and how many plans each dropped rule would allow).
+- **Pareto explorer** (feasible plans only): a plan is Pareto-optimal if no other feasible plan is at least as good on all four goals and strictly better on one (tolerance 1e-6; equal plans do not remove each other). Goals: irrigation need (avg mm/yr, **min**), rain on bare soil (mm/yr, **min**), raw nitrogen balance per year (**max**), climate risk = frost + heat events per year (**min**; the raw count is used, not the 0–1 climate score where higher is better). The chart shows irrigation × bare-soil rain, colour = nitrogen; A and C are marked. Hover or tap a dot for its values, the plan that dominates it and its water / bare-soil trade-off against the best feasible plan.
+- **Limits of this version:** no budget limit, no "keep year 1" or repeat limits, no climate stress test (20-year monthly averages only), scores are relative (not yield or profit), irrigation and bare-soil rain are model estimates.
+- **Future work:** NASA POWER year-by-year stress test (dry / hot years, robust choice), sensitivity (tornado) analysis, budget limit, multi-field planning (MILP), water-limit → feasible-plans chart.
+
+## Tests
+```
+node tests/decision.test.cjs     # Decision Lab: limits, Pareto, immutability, i18n (no dependencies)
+node tests/harness.cjs --check   # A/B/C/D, scores and top-10 ranking unchanged vs tests/baseline.json
+```
+
 ## NASA data
 - [NASA POWER](https://power.larc.nasa.gov/), Agroclimatology community, monthly point API: `T2M`, `T2M_MAX`, `T2M_MIN`, `PRECTOTCORR`, `FROST_DAYS`, `GWETROOT`, `GWETTOP`, `EVPTRNS`, `ALLSKY_SFC_SW_DWN`, `RH2M`.
 - [SRTM](https://www.earthdata.nasa.gov/data/instruments/srtm) elevation via the [Open-Elevation](https://open-elevation.com/) API → slope, and SRTM 30 m grids via [OpenTopoData](https://www.opentopodata.org/) → 3D terrain (`data/fetch_terrain.cjs` → `data/terrain.js`).
@@ -43,6 +61,8 @@ POWER is a ≈50 km grid, not field scale; soil wetness is modelled (MERRA-2); N
 - `index.html`, `css/style.css`
 - `js/engine.js` – climate helpers, single-window recommender, trends, NASA POWER loader (no DOM, testable in Node)
 - `js/rotation.js` – 3-year rotation timeline, cover-crop filling, scoring, optimizer (no DOM)
+- `js/decision.js` – Decision Lab: limits (per-year water, forbidden / required crops) and Pareto (no DOM)
+- `tests/harness.cjs`, `tests/decision.test.cjs`, `tests/baseline.json` – Node tests
 - `js/nasa-extra.js` – SRTM slope, terrain grid and MODIS NDVI loaders
 - `js/field3d.js` – 3D living-field view (three.js r128 from cdnjs, loaded only when the section is visible)
 - `js/i18n.js` – English / Turkish text; `js/app.js` – UI (SVG charts, no libraries)

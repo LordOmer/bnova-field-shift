@@ -59,7 +59,8 @@
     $("limits").innerHTML = t("limits").map(x => `<li>${x}</li>`).join("");
     $("f3dLegend").innerHTML = `<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw soil"></i>${t("f3dSoil")}</span><span><i class="sw drop"></i>${t("f3dDropOk")}</span><span><i class="sw drop bad"></i>${t("f3dDropBad")}</span><span><i class="sw drop wash"></i>${t("f3dWash")}</span><span><i class="sw drop spray"></i>${t("f3dSpray")}</span><span><i class="sw water"></i>${t("f3dWater")}</span>`;
     $("f3dPlay").textContent = window.Field3D && window.Field3D.playing ? t("f3dPause") : t("f3dPlayBtn");
-    $("tlLegend").innerHTML = `<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw bare"></i>${t("tl_bare")}</span>`;
+    dlBuildCrops();
+    $("tlLegend").innerHTML =`<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw bare"></i>${t("tl_bare")}</span>`;
     if (lastStatus) setStatus(lastStatus.key, lastStatus.vars, lastStatus.err);
   }
 
@@ -137,6 +138,10 @@
   $("load").addEventListener("click", loadClimate);
   ["y1", "y2", "y3", "irrigation", "texture", "slope", "om"].forEach(id => $(id).addEventListener("change", render));
   $("priorities").addEventListener("change", render);
+  // Decision Lab limits only redraw their own card
+  $("dlMax").addEventListener("input", () => drawDecision());
+  $("dlForbid").addEventListener("change", () => drawDecision());
+  $("dlReq").addEventListener("change", () => drawDecision());
 
   function setStatus(key, vars, err) {
     lastStatus = { key, vars, err };
@@ -217,6 +222,7 @@
     drawCalendar(main, rec.window);
     const cmp = R.compareRotations(climate, seq, window.MAIN_CROPS, window.ROTATION_CROPS, { priorities: prios, irrigation, soil });
     drawComparison(cmp, main, prios, irrigation, soil);
+    drawDecision(cmp);
     draw3d(cmp, soil, irrigation);
     drawRecs(main, rec);
     drawTrends();
@@ -384,6 +390,169 @@
   }
 
   const uniq = a => [...new Set(a)];
+
+  // ---------- Decision Lab (hard limits; separate from A/B/C/D, which it never changes) ----------
+  let dlCmp = null;
+  function dlCropList() { return window.MAIN_CROPS.filter(c => !c.noOptimize); } // hoisted: used by applyStaticText at start-up
+  function dlBuildCrops() {
+    for (const id of ["dlForbid", "dlReq"]) {
+      const fs = $(id), on = new Set([...fs.querySelectorAll("input:checked")].map(i => i.value));
+      fs.replaceChildren(fs.querySelector("legend"), ...dlCropList().map(c => {
+        const l = document.createElement("label");
+        l.innerHTML = `<input type="checkbox" value="${c.id}"${on.has(c.id) ? " checked" : ""}> <span>${esc(cname(c))}</span>`;
+        return l;
+      }));
+    }
+  }
+  function dlConstraints() {
+    const raw = $("dlMax").value.trim();
+    const picked = id => [...$(id).querySelectorAll("input:checked")].map(i => i.value);
+    return { maxIrrigationPerYear: raw === "" ? null : +raw, forbiddenCrops: picked("dlForbid"), requiredCrops: picked("dlReq") };
+  }
+  const mm = x => (x === null || x === undefined ? t("dlNA") : Math.round(x));
+  const cropName = id => { const c = mainById(id); return c ? cname(c) : id; };
+  function dlViolation(v) {
+    if (v.type === "water") {
+      const shown = Math.round(v.value) > v.limit ? Math.round(v.value) : v.value.toFixed(1);
+      return t("v_water", { y: v.year, v: shown, l: v.limit });
+    }
+    if (v.type === "water_unknown") return t("v_water_unknown");
+    return t("v_" + v.type, { crop: cropName(v.crop) });
+  }
+  // Which A/B/C/D card above shows the same 3 main crops (with cover crops)
+  function dlTag(plan) {
+    const k = R.canonical(plan.seq);
+    const s = dlCmp.strategies.find(x => x.key !== "current" && R.canonical(x.seq) === k);
+    return s ? `<span class="dl-tag">${esc(t("dlSameAs", { k: t("s_" + s.key).split("·")[0].trim() }))}</span>` : "";
+  }
+  const plainSeq = plan => plan.seq.map(cname).join(" → ");
+
+  function drawDecision(cmp) {
+    if (cmp) dlCmp = cmp;
+    if (!dlCmp || !window.FieldDecision || !dlCmp.all) return;
+    const D = window.FieldDecision;
+    const res = D.evaluate(dlCmp.all, dlConstraints());
+    const out = [];
+    out.push(`<p class="dl-sum"><b>${esc(t("dlSummary", { n: res.evaluated, ok: res.feasibleCount, bad: res.rejectedCount }))}</b></p>`);
+    if (!res.active) out.push(`<p class="hint">${esc(t("dlNoActive", { n: res.evaluated }))}</p>`);
+    if (res.topReasons.length) {
+      out.push(`<p class="hint">${esc(t("dlReasons"))}</p><ul>${res.topReasons.map(r => `<li>${esc(t("r_" + r.type, { n: r.count, crop: r.crop ? cropName(r.crop) : "" }))}</li>`).join("")}</ul>`);
+    }
+    if (res.active) {
+      const a = D.checkPlan(dlCmp.strategies[0], res.constraints);
+      out.push(a.feasible ? `<p class="dl-a ok">${esc(t("dlCurrentOk"))}</p>`
+        : `<p class="dl-a bad">${esc(t("dlCurrentBad", { why: a.violations.map(dlViolation).join("; ") }))}</p>`);
+    }
+    if (res.best) {
+      const b = res.best, c = b.crit, n = res.runnerUp;
+      let vs = t("dlOnlyOne");
+      if (n) {
+        const d = b.total - n.total;
+        vs = t(d ? "dlVsNext" : "dlVsNextTie", { plan: plainSeq(n.plan), s2: n.total, d, i1: mm(c.irrigationAvg), i2: mm(n.crit.irrigationAvg), b1: mm(c.rainOnBare), b2: mm(n.crit.rainOnBare) });
+      }
+      out.push(`<div class="dl-box best"><h3>${esc(t("dlBestTitle"))}: ${b.total}/100 ${dlTag(b.plan)}</h3>
+        <p class="seq">${seqLabel(b.plan)}</p>
+        <p>${esc(t("dlBestWhy", { s: b.total, ok: res.feasibleCount, avg: mm(c.irrigationAvg), y: c.irrigationByYear ? c.irrigationByYear.map(mm).join(" / ") : t("dlNA"), bare: mm(c.rainOnBare) }))}</p>
+        <p>${esc(vs)}</p>${(() => { const n = res.items.filter(x => x.feasible && x.total === b.total).length; return n > 1 ? `<p class="hint">${esc(t("dlTies", { n }))}</p>` : ""; })()}</div>`);
+    } else {
+      const rx = res.relax, li = [];
+      for (const id of rx.conflict) li.push(t("dlConflict", { crop: cropName(id) }));
+      for (const id of rx.unreachable) li.push(t("dlUnreachable", { crop: cropName(id) }));
+      if (rx.cropsBlock) li.push(t("dlRelaxCrops"));
+      if (rx.water) li.push(t("dlRelaxWater", { min: Math.ceil(rx.water.minLimit - D.TOL), plan: plainSeq(rx.water.plan) }));
+      for (const d of rx.drop) li.push(t("dlRelaxDrop", { n: d.count, rule: t("rule_" + d.type, { crop: d.crop ? cropName(d.crop) : "" }) }));
+      out.push(`<div class="dl-box none"><p><b>${esc(t("dlNone"))}</b></p><ul>${li.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`);
+    }
+    const rows = res.items.slice().sort((x, y) => (y.feasible - x.feasible) || (y.total - x.total) || (x.index - y.index)).map((it, i) => {
+      const c = it.crit;
+      const irr = c.irrigationByYear ? `${c.irrigationByYear.map(mm).join(" / ")} · ${mm(c.irrigationAvg)}` : t("dlNA");
+      const st = it.feasible ? t("dlOk") : it.violations.map(dlViolation).join("; ");
+      return `<tr class="${it.feasible ? "" : "off"}"><td>${i + 1}</td><td>${seqLabel(it.plan)} ${dlTag(it.plan)}</td><td class="num"><b>${it.total}</b></td><td class="num">${irr}</td><td class="st${it.feasible ? " ok" : ""}">${esc(st)}</td></tr>`;
+    }).join("");
+    out.push(`<div class="dl-list"><table class="cmp"><thead><tr><th>#</th><th>${esc(t("dlColPlan"))}</th><th>${esc(t("dlColScore"))}</th><th>${esc(t("dlColIrr"))}</th><th>${esc(t("dlColStatus"))}</th></tr></thead><tbody>${rows}</tbody></table></div>`);
+    if (res.feasibleCount) out.push(`<h3 class="dl-ph">${esc(t("dlParetoTitle"))}</h3><div id="dlPareto"></div><p id="dlTip" class="dl-tip" aria-live="polite"></p>`);
+    $("dlOut").className = "dl-out";
+    $("dlOut").innerHTML = out.join("");
+    if (res.feasibleCount) drawPareto(res);
+  }
+
+  // Scatter: x = irrigation need, y = rain on bare soil; colour = nitrogen; big = Pareto-optimal. Hover/tap shows details only.
+  function drawPareto(res) {
+    const D = window.FieldDecision;
+    const P = D.pareto(res.items.filter(x => x.feasible).map(x => x.plan));
+    const A = dlCmp.strategies[0], C = dlCmp.strategies.find(s => s.key === "optimized");
+    const crA = D.criteria(A), crC = C ? D.criteria(C) : null;
+    const pts = P.points.filter(p => p.crit.irrigationAvg !== null && p.crit.rainOnBare !== null);
+    const xs = pts.map(p => p.crit.irrigationAvg).concat(crA.irrigationAvg ?? [], crC && crC.irrigationAvg !== null ? crC.irrigationAvg : []);
+    const ys = pts.map(p => p.crit.rainOnBare).concat(crA.rainOnBare ?? [], crC && crC.rainOnBare !== null ? crC.rainOnBare : []);
+    const nice = m => { const raw = Math.max(m, 10) / 5, p = 10 ** Math.floor(Math.log10(raw)), s = [1, 2, 2.5, 5, 10].find(k => k * p >= raw) * p; return { step: s, max: Math.ceil(Math.max(m, 10) * 1.05 / s) * s }; };
+    const gx = nice(Math.max(...xs)), gy = nice(Math.max(...ys));
+    // draw at the box's real width so text and dots stay readable on phones
+    const W = Math.round(Math.max(320, Math.min(940, $("dlPareto").clientWidth || 940))), H = W < 600 ? 300 : 380, L = 64, Rr = 20, T = 16, B = 52;
+    const X = v => L + (W - L - Rr) * v / gx.max, Y = v => T + (H - T - B) * (1 - v / gy.max);
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img", "aria-label": t("dlParetoTitle"), class: "dl-svg" });
+    for (let v = 0; v <= gx.max + 1e-9; v += gx.step) {
+      svg.append(el("line", { x1: X(v), x2: X(v), y1: T, y2: H - B, stroke: "#eee" }));
+      svg.append(el("text", { x: X(v), y: H - B + 16, "text-anchor": "middle", "font-size": 12, fill: "var(--muted)" }, Math.round(v)));
+    }
+    for (let v = 0; v <= gy.max + 1e-9; v += gy.step) {
+      svg.append(el("line", { x1: L, x2: W - Rr, y1: Y(v), y2: Y(v), stroke: "#eee" }));
+      svg.append(el("text", { x: L - 8, y: Y(v) + 4, "text-anchor": "end", "font-size": 12, fill: "var(--muted)" }, Math.round(v)));
+    }
+    svg.append(el("text", { x: L + (W - L - Rr) / 2, y: H - 8, "text-anchor": "middle", "font-size": 13, fill: "var(--ink)" }, t("dlAxisX")));
+    svg.append(el("text", { x: 16, y: T + (H - T - B) / 2, "text-anchor": "middle", "font-size": 13, fill: "var(--ink)", transform: `rotate(-90 16 ${T + (H - T - B) / 2})` }, t("dlAxisY")));
+    const nColor = n => {
+      const k = Math.max(0, Math.min(1, (n + 3) / 6));
+      const mix = (a, b, f) => a.map((x, i) => Math.round(x + (b[i] - x) * f));
+      const c = k < 0.5 ? mix([180, 80, 31], [217, 207, 166], k * 2) : mix([217, 207, 166], [46, 125, 50], (k - 0.5) * 2);
+      return `rgb(${c.join(",")})`;
+    };
+    // dominated first, Pareto-optimal on top
+    const order = pts.slice().sort((a, b) => a.onFront - b.onFront);
+    for (const p of order) {
+      const c = el("circle", { cx: X(p.crit.irrigationAvg), cy: Y(p.crit.rainOnBare), r: p.onFront ? 8 : 5, fill: p.crit.nBalance === null ? "#bbb" : nColor(p.crit.nBalance), stroke: p.onFront ? "#23301f" : "none", "stroke-width": 1.5, opacity: p.onFront ? 1 : 0.4, tabindex: 0, "data-i": P.points.indexOf(p), class: "dl-pt" });
+      svg.append(c);
+    }
+    const mark = (cr, label, dash) => {
+      if (!cr || cr.irrigationAvg === null || cr.rainOnBare === null) return;
+      const x = X(cr.irrigationAvg), y = Y(cr.rainOnBare);
+      svg.append(el("circle", { cx: x, cy: y, r: 13, fill: "none", stroke: "var(--ink)", "stroke-width": 2, "stroke-dasharray": dash || "none", "pointer-events": "none" }));
+      svg.append(el("text", { x: x + 16, y: y - 10, "font-size": 15, "font-weight": 700, fill: "var(--ink)", "pointer-events": "none" }, label));
+    };
+    mark(crA, "A", "4 3"); mark(crC, "C");
+    $("dlPareto").replaceChildren(svg);
+    const legend = document.createElement("div");
+    legend.className = "legend";
+    legend.innerHTML = `<span><i class="dl-dot big"></i>${esc(t("dlLegFront"))}</span><span><i class="dl-dot"></i>${esc(t("dlLegDom"))}</span><span><i class="dl-grad"></i>${esc(t("dlLegN"))}</span><span>◌ ${esc(t("dlLegA"))}</span><span>○ ${esc(t("dlLegC"))}</span>`;
+    const sum = document.createElement("p");
+    sum.className = "hint";
+    sum.textContent = `${t("dlParetoSum", { n: P.frontCount, ok: P.points.length })} ${t("dlParetoNote")}${P.notComputable ? " " + t("dlParetoNA", { n: P.notComputable }) : ""}`;
+    const tip = $("dlTip");
+    $("dlPareto").append(tip, legend, sum); // details right under the chart
+    tip.textContent = t("dlTipHint");
+    const best = res.best;
+    const show = e => {
+      const i = e.target && e.target.getAttribute && e.target.getAttribute("data-i");
+      if (i === null || i === undefined) return;
+      const p = P.points[+i], c = p.crit;
+      const f2 = x => (x === null ? t("dlNA") : (Math.round(x * 100) / 100).toString());
+      const parts = [t("dlTip", { plan: plainSeq(p.plan), s: p.plan.total, irr: mm(c.irrigationAvg), y: c.irrigationByYear ? c.irrigationByYear.map(mm).join("/") : t("dlNA"), bare: mm(c.rainOnBare), n: f2(c.nBalance), r: f2(c.climateRisk) })];
+      parts.push(!p.computable ? t("dlTipNA") : p.onFront ? t("dlTipFront") : t("dlTipDom", { plan: plainSeq(P.points.find(q => q.key === p.dominatedBy).plan) }));
+      if (best && best.key === p.key) parts.push(t("dlTbest"));
+      else if (best && c.irrigationAvg !== null && best.crit.irrigationAvg !== null && c.rainOnBare !== null && best.crit.rainOnBare !== null) {
+        const dw = Math.round(c.irrigationAvg - best.crit.irrigationAvg), db = Math.round(c.rainOnBare - best.crit.rainOnBare), tr = [];
+        if (dw) tr.push(t(dw < 0 ? "dlTlessWater" : "dlTmoreWater", { d: Math.abs(dw) }));
+        if (db) tr.push(t(db < 0 ? "dlTlessBare" : "dlTmoreBare", { d: Math.abs(db) }));
+        parts.push(t("dlTrade", { plan: plainSeq(best.plan), parts: tr.length ? tr.join(", ") : t("dlTsame") }));
+      }
+      tip.textContent = parts.join(" ");
+      svg.querySelectorAll(".dl-pt.on").forEach(x => x.classList.remove("on"));
+      e.target.classList.add("on");
+    };
+    svg.addEventListener("mouseover", show);
+    svg.addEventListener("click", show);
+    svg.addEventListener("focusin", show);
+  }
 
   // 36-month strip: Oct of year 1 → Sep of year 3
   function timeline(s) {

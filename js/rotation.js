@@ -116,6 +116,7 @@
     // a main crop just before leaves only 30 %. Simplified water balance – see "Data, limits & honesty".
     const gw = climate.monthly.GWETROOT || [];
     let need = 0, irrigation = 0, stored = 0;
+    const irrigationByYear = Array(YEARS).fill(0); // each planting counts in its own agricultural year (Oct–Sep) of sowing
     for (const p of plantings) {
       p.rain = Math.round(p.slots.reduce((s, i) => s + rain(climate, slots[i].month), 0));
       p.need = p.crop.water;
@@ -129,6 +130,7 @@
       }
       p.irrigation = Math.max(0, p.need - p.rain - p.stored);
       need += p.need; irrigation += p.irrigation; stored += p.stored;
+      irrigationByYear[p.year] += p.irrigation;
     }
     const mains = plantings.filter(p => p.kind === "main");
     const covers = plantings.filter(p => p.kind === "cover");
@@ -180,7 +182,9 @@
         needPerYear: Math.round(need / YEARS), irrigationPerYear: Math.round(irrigation / YEARS), storedPerYear: Math.round(stored / YEARS),
         nBalance: r1(nBalance), organic: r1(organic), forage: r1(forage),
         repeats, bridges, families, heat, frost, coverCount: covers.length,
-        tightCovers: covers.filter(p => p.tight).length, fallowYears
+        tightCovers: covers.filter(p => p.tight).length, fallowYears,
+        // extra fields for js/decision.js (not used in the score)
+        irrigationByYear, nBalanceRaw: nBalance, riskPerYear
       }
     };
   }
@@ -228,7 +232,7 @@
     const strategies = [s1, s2];
     if (best) strategies.push({ key: "optimized", ...best });
     if (alt) strategies.push({ key: "alternative", ...alt });
-    return { anchor, strategies, evaluated: all.length, ranking: all.slice(0, 10), weights: weights(o.priorities, o.irrigation, o.soil) };
+    return { anchor, strategies, evaluated: all.length, ranking: all.slice(0, 10), all, weights: weights(o.priorities, o.irrigation, o.soil) };
   }
 
   const api = { YEARS, AG, posOf, weights, SOIL_STORE, DEFAULT_SOIL, bareGaps, buildTimeline, evaluateRotation, compareRotations, canonical };
