@@ -3,7 +3,7 @@
   const I18N = {
     en: {
       months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      title: "Field Shift – BNova | Crop rotation helper with NASA data",
+      title: "Field Shift – BNöva | Crop rotation helper with NASA data",
       tagline: "Compare crop rotations for your field using 20 years of NASA climate data: what to grow, when the soil is bare, and what each choice means for soil, water and risk.",
       disclaimer: "<b>Decision support, not a prescription.</b> Field Shift shows patterns and possibilities from NASA climate data. It does not replace your own experience or a local agricultural expert. Check every suggestion locally before you change your rotation.",
       location: "Location", latitude: "Latitude", longitude: "Longitude", load: "Load NASA data",
@@ -25,7 +25,7 @@
       calHint: "Bars: average monthly rainfall. Orange line: average temperature. Brown dashed line: root-zone soil wetness (0 = dry, 1 = saturated). Green dotted line: satellite greenness (MODIS NDVI, 0–1) around the point. ❄ = frost days, 🔥 = heat spike (hottest day of the month). Shaded: your year-1 crop. Green outline: bare window.",
       rainAxis: "rain mm", soilAxis: "soil wetness",
       cmpTitle: "Compare rotations (3-year cycle)",
-      cmpHint: "We tested {n} three-year rotations that keep {main} in year 1 and filled every bare window with the best-fitting cover crop. Scores combine NASA climate data with your priorities and water situation.",
+      cmpHint: "We tested {n} three-year rotations that keep {main} and filled every bare window with the best-fitting cover crop. Scores combine NASA climate data with your priorities and water situation.",
       strategy: "Strategy", total: "Overall score",
       s_current: "A · Your current rotation", s_current_cover: "B · Current + cover crops", s_optimized: "C · Best rotation found", s_alternative: "D · Alternative rotation",
       sc_soil: "Soil cover (erosion)", sc_nitrogen: "Nitrogen balance", sc_organic: "Organic matter", sc_water: "Water (less irrigation)",
@@ -96,12 +96,13 @@
         "<b>Satellite greenness:</b> NASA <a href=\"https://modis.gsfc.nasa.gov/\" target=\"_blank\" rel=\"noopener\">MODIS</a> Terra MOD13Q1 NDVI (250 m, 16-day) via the <a href=\"https://modis.ornl.gov/data/modis_webservice.html\" target=\"_blank\" rel=\"noopener\">ORNL DAAC MODIS web service</a>, last full year, mean of land pixels in a 2 km × 2 km window. It mixes many fields, so it shows the local land pattern, not your single field.",
         "<b>Resolution:</b> POWER values are averages over a grid cell of roughly 50 km. They describe your region's climate, not differences inside one field (slope, shade, drainage).",
         "<b>Soil wetness is modelled</b> (from the MERRA-2 reanalysis used by POWER), not a direct satellite or probe measurement. Averages over 20 years hide extreme years.",
+        "<b>US crop history:</b> <a href=\"https://www.nass.usda.gov/Research_and_Science/Cropland/SARS1a.php\" target=\"_blank\" rel=\"noopener\">USDA NASS Cropland Data Layer</a> (30 m, satellite-based crop classification, via the CropScape service) gives the crop grown at US preset points each year (2019–2025). It is embedded for the presets because the service does not allow direct browser requests. Each pixel has classification errors.",
         "<b>Water balance is simplified:</b> each crop gets the rain of its months; a main crop also gets soil water stored at sowing, estimated from root-zone wetness and your soil texture (sandy ≈ 70 mm, loamy ≈ 150 mm, clay ≈ 200 mm when wet), halved if a cover crop grew just before (cover crops use water too). Real soils differ in how much water they hold.",
         "<b>Crop characteristics</b> are approximate rules of thumb compiled by the team. They are a prototype, not certified agronomic advice.",
         "<b>Scores</b> are relative: they compare options for the same place, they do not predict yield or profit. Weights: 8 sub-scores, each weight raised when you tick a priority or have little irrigation water.",
         "<b>Not included yet:</b> measured soil type and pH, field-scale imagery (Landsat/Sentinel-2), rainfall extremes (GPM IMERG), SMAP soil moisture, local prices and subsidies.",
         "<b>AI use:</b> code, data scripts and text drafts were written with help from Claude (Anthropic) and reviewed by the team. No AI images are used.",
-        "Built by team BNova during NASA Space Apps Challenge 2026, Yalova. No NASA endorsement implied."
+        "Built by team BNöva during NASA Space Apps Challenge 2026, Yalova. No NASA endorsement implied."
       ],
       st_showing: "Showing {name} ({src}).",
       st_embedded: "Showing {name}: NASA POWER data {period}, embedded so it works offline. Pick another location to load live data.",
@@ -109,11 +110,14 @@
       st_loaded: "Loaded live NASA POWER data for {name}.",
       st_error: "Could not load NASA data ({err}). Showing the last loaded location instead.",
       st_badcoord: "Please enter a valid latitude/longitude.",
+      usa: "USA", other: "Other",
+      cdlNote: "USDA Cropland Data Layer at this point: {hist}. Your current rotation is set from the last 3 years (you can change it).",
+      ev_cdl: "USDA Cropland Data Layer (satellite-based crop map) shows {hist} at this point.",
       turkey: "Turkey", perYear: "/yr"
     },
     tr: {
       months: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-      title: "Field Shift – BNova | NASA verisiyle ekim nöbeti yardımcısı",
+      title: "Field Shift – BNöva | NASA verisiyle ekim nöbeti yardımcısı",
       tagline: "Tarlan için ekim nöbetlerini 20 yıllık NASA iklim verisiyle karşılaştır: ne ekilir, toprak ne zaman boş kalır, her seçim toprak, su ve risk için ne anlama gelir.",
       disclaimer: "<b>Karar desteğidir, reçete değildir.</b> Field Shift, NASA iklim verisinden örüntüleri ve olasılıkları gösterir. Senin deneyiminin ya da yerel tarım uzmanının yerini tutmaz. Rotasyonunu değiştirmeden önce her öneriyi yerelde kontrol et.",
       location: "Konum", latitude: "Enlem", longitude: "Boylam", load: "NASA verisini yükle",
@@ -135,7 +139,7 @@
       calHint: "Sütunlar: ortalama aylık yağış. Turuncu çizgi: ortalama sıcaklık. Kahverengi kesikli çizgi: kök bölgesi toprak nemi (0 = kuru, 1 = doygun). Yeşil noktalı çizgi: noktanın çevresinde uydudan görülen yeşillik (MODIS NDVI, 0–1). ❄ = don günü, 🔥 = sıcak dalgası (ayın en sıcak günü). Gölgeli: 1. yıl ürünün. Yeşil çerçeve: boş pencere.",
       rainAxis: "yağış mm", soilAxis: "toprak nemi",
       cmpTitle: "Ekim nöbetlerini karşılaştır (3 yıllık döngü)",
-      cmpHint: "1. yılda {main} kalan {n} farklı 3 yıllık rotasyonu denedik ve her boş pencereyi en uygun örtü bitkisiyle doldurduk. Skorlar NASA iklim verisini senin önceliklerin ve su durumunla birleştirir.",
+      cmpHint: "{main} ürününü koruyan {n} farklı 3 yıllık rotasyonu denedik ve her boş pencereyi en uygun örtü bitkisiyle doldurduk. Skorlar NASA iklim verisini senin önceliklerin ve su durumunla birleştirir.",
       strategy: "Strateji", total: "Genel skor",
       s_current: "A · Mevcut rotasyonun", s_current_cover: "B · Mevcut + örtü bitkileri", s_optimized: "C · Bulunan en iyi rotasyon", s_alternative: "D · Alternatif rotasyon",
       sc_soil: "Toprak örtüsü (erozyon)", sc_nitrogen: "Azot dengesi", sc_organic: "Organik madde", sc_water: "Su (daha az sulama)",
@@ -206,12 +210,13 @@
         "<b>Uydu yeşilliği:</b> NASA <a href=\"https://modis.gsfc.nasa.gov/\" target=\"_blank\" rel=\"noopener\">MODIS</a> Terra MOD13Q1 NDVI (250 m, 16 günlük), <a href=\"https://modis.ornl.gov/data/modis_webservice.html\" target=\"_blank\" rel=\"noopener\">ORNL DAAC MODIS servisi</a> üzerinden; son tam yıl, 2 km × 2 km penceredeki kara piksellerinin ortalaması. Birçok tarlayı karıştırır; tek tarlanı değil yöresel deseni gösterir.",
         "<b>Çözünürlük:</b> POWER değerleri yaklaşık 50 km'lik bir ızgara hücresinin ortalamasıdır. Bölgenin iklimini anlatır, tarla içindeki farkları (eğim, gölge, drenaj) göstermez.",
         "<b>Toprak nemi modeldir</b> (POWER'ın kullandığı MERRA-2 yeniden analizinden), doğrudan uydu ya da sensör ölçümü değildir. 20 yıllık ortalamalar uç yılları gizler.",
+        "<b>ABD ürün geçmişi:</b> <a href=\"https://www.nass.usda.gov/Research_and_Science/Cropland/SARS1a.php\" target=\"_blank\" rel=\"noopener\">USDA NASS Cropland Data Layer</a> (30 m, uydu tabanlı ürün sınıflandırması, CropScape servisi üzerinden) ABD ön ayar noktalarında her yıl ekilen ürünü verir (2019–2025). Servis tarayıcıdan doğrudan sorguya izin vermediği için ön ayarlarda gömülüdür. Her pikselde sınıflandırma hatası olabilir.",
         "<b>Su dengesi basitleştirilmiştir:</b> her ürün kendi aylarının yağışını alır; ana ürün ayrıca ekimde toprakta depolu suyu alır: kök bölgesi nemi ve toprak bünyesine göre (kumlu ≈ 70 mm, tınlı ≈ 150 mm, killi ≈ 200 mm, nemliyken); hemen öncesinde örtü bitkisi varsa yarıya iner (örtü bitkileri de su tüketir). Gerçek topraklar farklı miktarda su tutar.",
         "<b>Ürün özellikleri</b> takımın derlediği yaklaşık genel kurallardır. Bir prototiptir, onaylı tarım tavsiyesi değildir.",
         "<b>Skorlar</b> görecelidir: aynı yer için seçenekleri karşılaştırır, verim ya da kâr tahmini yapmaz. Ağırlıklar: 8 alt skor; öncelik işaretlediğinde ya da sulama suyun az olduğunda ilgili ağırlık artar.",
         "<b>Henüz dahil değil:</b> ölçülmüş toprak tipi ve pH, tarla ölçeğinde görüntü (Landsat/Sentinel-2), aşırı yağış (GPM IMERG), SMAP toprak nemi, yerel fiyatlar ve destekler.",
         "<b>YZ kullanımı:</b> kod, veri betikleri ve metin taslakları Claude (Anthropic) yardımıyla yazıldı ve takım tarafından kontrol edildi. YZ görseli kullanılmadı.",
-        "BNova takımı tarafından NASA Space Apps Challenge 2026 Yalova etkinliğinde geliştirildi. NASA onayı ima edilmez."
+        "BNöva takımı tarafından NASA Space Apps Challenge 2026 Yalova etkinliğinde geliştirildi. NASA onayı ima edilmez."
       ],
       st_showing: "{name} gösteriliyor ({src}).",
       st_embedded: "{name} gösteriliyor: NASA POWER verisi {period}, çevrimdışı çalışsın diye gömülü. Canlı veri için başka konum seç.",
@@ -219,6 +224,9 @@
       st_loaded: "{name} için canlı NASA POWER verisi yüklendi.",
       st_error: "NASA verisi yüklenemedi ({err}). Son yüklenen konum gösteriliyor.",
       st_badcoord: "Lütfen geçerli bir enlem/boylam gir.",
+      usa: "ABD", other: "Diğer",
+      cdlNote: "Bu noktada USDA Cropland Data Layer: {hist}. Mevcut rotasyonun son 3 yıldan dolduruldu (değiştirebilirsin).",
+      ev_cdl: "USDA Cropland Data Layer (uydu tabanlı ürün haritası) bu noktada {hist} gösteriyor.",
       turkey: "Türkiye", perYear: "/yıl"
     }
   };

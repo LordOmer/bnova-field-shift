@@ -1,4 +1,4 @@
-# Field Shift – NASA Space Apps 2026 Submission (Team BNova, Yalova)
+# Field Shift – NASA Space Apps 2026 Submission (Team BNöva, Yalova)
 
 > Paste-ready text for the project submission form. Results below use the app defaults (priorities: nitrogen + erosion; irrigation: limited; soil: loamy, gentle slope, medium organic matter). Scores can shift by 1–2 points after small model tweaks, so they are given as "≈".
 
@@ -25,7 +25,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 4. **Compare three strategies over 3 years:**
    - **A. Current rotation**, as the farmer runs it today.
    - **B. Current rotation + cover crops** in every bare window.
-   - **C. Best rotations found by the optimizer.** It keeps the farmer's year-1 crop and tests 43 distinct 3-year rotations of 7 main crops (wheat, barley, silage maize, sunflower, field tomato, chickpea, canola), with cyclic duplicates removed. Every bare window gets the best-fitting of 12 cover crops: vetch + oat, cereal rye, faba bean, field pea, crimson clover, lentil, mustard, chickpea, cowpea, sorghum-sudangrass, buckwheat and soybean.
+   - **C. Best rotations found by the optimizer.** It keeps the farmer's year-1 crop and tests every distinct 3-year rotation (73 with the current crop list, cyclic duplicates removed; silage maize and grain corn count as one crop group) of 10 main crops (wheat, barley, canola, silage maize, grain corn, soybean, grain sorghum, sunflower, chickpea, field tomato; "fallow year" can be entered as the current practice). Every bare window gets the best-fitting of 12 cover crops: vetch + oat, cereal rye, faba bean, field pea, crimson clover, lentil, mustard, chickpea, cowpea, sorghum-sudangrass, buckwheat and soybean.
 5. **See climate trends for 2004–2023.** Yalova: +0.53 °C per decade, −7.5 frost days per decade, +38 mm rain per decade.
 
 **Scoring (0–100), from 7 sub-scores:**
@@ -140,7 +140,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 | Erosion / terrain | SRTM slope auto-fills the slope input; steep slope raises the soil-cover weight |
 | Bare-field periods | Crop calendar plus MODIS NDVI "least green" months |
 | Local soil | Texture, slope and organic matter inputs change stored water, weights and risk texts |
-| Crop characteristics | Table of 7 main crops and 12 cover crops: season, temperature range, frost tolerance, water need, N-fixation, residue, family |
+| Crop characteristics | Table of 10 main crops (+ fallow year) and 12 cover crops: season, temperature range, frost tolerance, water need, N-fixation, residue, family |
 | Farmer priorities | Water use, animal feed, nitrogen fixation, erosion, organic matter, market; all change the weights |
 | Explain why / evidence / benefits / gaps / risks | Required fields on every strategy card |
 | Accessibility | Free, static, phone-friendly, English/Turkish, glossary |
@@ -153,6 +153,11 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Crop parameters (temperature ranges, water needs, nitrogen, residue, market scores) are approximate rules of thumb that local experts must check.
 - The tool has no soil pH, salinity, local pest data or real prices.
 - Scores compare options with each other. They are not yield forecasts.
+
+## Example results – USA (embedded presets, USDA Cropland Data Layer + NASA data)
+- **Nebraska – York County (40.95, −97.45):** the CDL shows corn every year 2019–2025. A (corn × 3) ≈50 → B (+ field pea cover) ≈71 → C corn → soybean → sunflower with covers ≈87.
+- **Iowa – Boone County (42.20, −93.80):** CDL corn/soybean alternation 2019–2025. A (corn → soy → corn) ≈61 → B (+ vetch/oat, lentil covers) ≈82 → C ≈89. MODIS: greenest in July, least green November–April (bare after harvest).
+- **Kansas – McPherson County (38.10, −98.00):** CDL wheat, double-crop wheat/soy, corn, soybeans. A (soy → wheat → wheat) ≈59 → C ≈84.
 
 ## Judging criteria
 - **Impact:** a free, phone-friendly tool that turns NASA data into rotation plans that cut bare-soil exposure (Yalova: ≈468 → ≈45 mm/yr of rain on bare soil) and add nitrogen; scale: Turkey loses ≈642 Mt of soil to erosion per year and has 2.32 million registered farmers; agriculture uses ≈79% of its water.
@@ -192,7 +197,9 @@ POWER combines satellite observations with model/reanalysis products (e.g. MERRA
 - Yalova: greenest April (0.59), least green February and July–September (≈0.31). Konya: least green July–November (≈0.14).
 
 ## Space agency partner & other data
-No partner-agency datasets are used yet. Open-Elevation is a third-party access service for NASA SRTM data, not a separate dataset. Planned:
+- **USDA NASS Cropland Data Layer** (https://www.nass.usda.gov/Research_and_Science/Cropland/SARS1a.php, listed in the challenge resources), 30 m satellite-based crop classification, queried through the CropScape GetCDLValue service. For the US presets (Iowa – Boone County, Kansas – McPherson County, Nebraska – York County) the app shows the crop grown at the point in 2019–2025 and fills the "current rotation" from the last 3 years automatically. Because the service blocks direct browser requests, the values are downloaded with `data/fetch_presets.cjs` and embedded.
+- Open-Elevation is a third-party access service for NASA SRTM data, not a separate dataset.
+- No space-agency partner datasets (ESA, etc.) are used yet. Planned:
 - **NASA SMAP** satellite soil moisture, to compare with modeled GWETROOT.
 - **NASA GPM IMERG** daily rainfall, for extreme-rain and erosion-risk days.
 - **ESA Sentinel-2 / NASA-USGS Landsat** (10–30 m) NDVI, to detect bare soil on a single field.
@@ -217,7 +224,7 @@ No partner-agency datasets are used yet. Open-Elevation is a third-party access 
 - **No AI-generated images, video or audio** are used.
 - No NASA logo, flag or emblem is used.
 
-## Team BNova
+## Team BNöva
 - **Berrak**: 3rd-year Industrial Engineering; data analysis, optimization, crop data review
 - **Nisa Nur**: 3rd-year Industrial Engineering; data analysis, optimization, presentation
 - **Ömer**: 2nd-year Computer Engineering; software, web app, NASA data integration, publishing

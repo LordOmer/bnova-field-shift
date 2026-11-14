@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Field Shift – BNova | Crop rotation helper with NASA data</title>
-  <meta name="description" content="Compare crop rotations for your field with 20 years of NASA POWER climate data. NASA Space Apps Challenge 2026, team BNova (Yalova).">
+  <title>Field Shift – BNöva | Crop rotation helper with NASA data</title>
+  <meta name="description" content="Compare crop rotations for your field with 20 years of NASA POWER climate data. NASA Space Apps Challenge 2026, team BNöva (Yalova).">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌱%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,7 +12,7 @@
   <header>
     <div class="wrap head">
       <div>
-        <h1>🌱 Field Shift <span class="team">by BNova</span></h1>
+        <h1>🌱 Field Shift <span class="team">by BNöva</span></h1>
         <p class="tagline" data-i18n="tagline"></p>
       </div>
       <div class="lang" role="group" aria-label="Language">
@@ -40,6 +40,7 @@
           <label><span class="yr" data-year="1"></span><select id="y1"></select></label>
           <label><span class="yr" data-year="2"></span><select id="y2"></select></label>
           <label><span class="yr" data-year="3"></span><select id="y3"></select></label>
+          <span id="cdlNote" class="note"></span>
         </fieldset>
         <label><span data-i18n="irrigation"></span>
           <select id="irrigation">
@@ -130,6 +131,7 @@
 
   <script src="data/yalova.js"></script>
   <script src="data/crops.js"></script>
+  <script src="data/presets.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/rotation.js"></script>

@@ -1,14 +1,12 @@
 // UI for Field Shift. Depends on: YALOVA_DATA, MAIN_CROPS, ROTATION_CROPS, i18n, FieldShift (engine.js), FieldRotation (rotation.js)
 (function () {
   const E = window.FieldShift, R = window.FieldRotation, t = window.i18n.t;
+  // Presets: Yalova (data/yalova.js) + Turkey/USA points with embedded data (data/presets.js) + custom
+  const EMB = window.PRESET_DATA || [];
   const PRESETS = [
-    { name: "Yalova", lat: 40.64, lon: 29.33 },
-    { name: "Bursa – Karacabey", lat: 40.21, lon: 28.36 },
-    { name: "Edirne", lat: 41.68, lon: 26.56 },
-    { name: "Konya", lat: 37.95, lon: 32.7 },
-    { name: "Adana", lat: 37.0, lon: 35.32 },
-    { name: "Şanlıurfa – Harran", lat: 36.86, lon: 39.03 },
-    { name: null, lat: null, lon: null }
+    { name: "Yalova", country: "TR", lat: 40.64, lon: 29.33 },
+    ...EMB.map(p => ({ name: p.name, country: p.country, lat: p.lat, lon: p.lon })),
+    { name: null, country: null, lat: null, lon: null }
   ];
   const SCORE_KEYS = ["soil", "nitrogen", "organic", "water", "pest", "climate", "market", "forage"];
   const $ = id => document.getElementById(id);
@@ -16,10 +14,13 @@
   const cache = {};
   let climate = window.YALOVA_DATA;
   cache["40.64,29.33"] = climate;
+  climate.country = "TR"; climate.name = "Yalova";
+  for (const p of EMB) { p.climate.country = p.country; cache[`${p.lat},${p.lon}`] = p.climate; }
   let lastStatus = null;
 
   const MON = () => t("months");
-  const place = c => c.name.replace(/, (Turkey|Türkiye)$/, ", " + t("turkey"));
+  const countryName = cc => (cc === "TR" ? t("turkey") : cc === "US" ? t("usa") : "");
+  const place = c => c.name + (c.country ? ", " + countryName(c.country) : "");
   const cname = c => (window.i18n.lang === "tr" ? c.tr : c.en);
   const mon = m => MON()[m - 1];
   const monthsList = ms => ms.map(mon).join(", ");
@@ -42,7 +43,12 @@
     document.querySelectorAll(".yr").forEach(e => (e.textContent = t("year", { n: e.dataset.year })));
     document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.lang === window.i18n.lang));
     const sel = $("preset"), cur = sel.value;
-    sel.replaceChildren(...PRESETS.map((p, i) => new Option(p.name || t("custom"), i)));
+    const groups = [["TR", t("turkey")], ["US", t("usa")], [null, t("other")]].map(([cc, label]) => {
+      const g = document.createElement("optgroup"); g.label = label;
+      PRESETS.forEach((p, i) => { if (p.country === cc) g.append(new Option(p.name || t("custom"), i)); });
+      return g;
+    });
+    sel.replaceChildren(...groups.filter(g => g.children.length));
     sel.value = cur || 0;
     for (const id of ["y1", "y2", "y3"]) {
       const s = $(id), v = s.value;
@@ -84,12 +90,13 @@
     if (!isFinite(lat) || !isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) { setStatus("st_badcoord", null, true); return; }
     const key = `${lat},${lon}`;
     const preset = PRESETS.find(p => p.lat === lat && p.lon === lon);
-    const name = preset ? `${preset.name}, ${t("turkey")}` : `${lat}, ${lon}`;
-    if (cache[key]) { climate = cache[key]; applySlope(); render(); setStatus("st_showing", { name: place(climate), src: climate.source }); return; }
+    const name = preset ? preset.name : `${lat}, ${lon}`;
+    if (cache[key]) { climate = cache[key]; applyCdl(); applySlope(); render(); setStatus("st_showing", { name: place(climate), src: climate.source }); loadExtra(climate); return; }
     $("load").disabled = true; setStatus("st_loading"); $("slopeNote").textContent = "";
     try {
       climate = await E.fetchPower(lat, lon, name);
-      cache[key] = climate; render();
+      climate.country = preset ? preset.country : null;
+      cache[key] = climate; applyCdl(); render();
       setStatus("st_loaded", { name });
       loadExtra(climate);
     } catch (e) {
@@ -100,6 +107,7 @@
   // SRTM slope + MODIS NDVI for the current point (live; Yalova is embedded)
   async function loadExtra(c) {
     c.extra = c.extra || {};
+    if (c.extra.slope && c.extra.ndvi) { if (c === climate) { applySlope(); render(); } return; }
     const year = new Date().getFullYear() - 1;
     const [sl, nd] = await Promise.allSettled([
       c.extra.slope ? Promise.resolve(c.extra.slope) : window.NasaExtra.fetchSlope(c.lat, c.lon),
@@ -108,6 +116,20 @@
     if (sl.status === "fulfilled") c.extra.slope = sl.value; else c.extra.slopeErr = true;
     if (nd.status === "fulfilled") c.extra.ndvi = nd.value; else c.extra.ndviErr = true;
     if (c === climate) { applySlope(); render(); }
+  }
+  // USDA Cropland Data Layer (US presets): crop grown at this point each year -> current rotation = last 3 known years
+  function cdlCrops() {
+    const h = (climate.extra && climate.extra.cdl) || [];
+    return h.filter(x => x.crop && mainById(x.crop));
+  }
+  function applyCdl() {
+    const h = (climate.extra && climate.extra.cdl) || [];
+    const known = cdlCrops();
+    if (known.length >= 3) {
+      const last = known.slice(-3);
+      ["y1", "y2", "y3"].forEach((id, i) => ($(id).value = last[i].crop));
+    }
+    $("cdlNote").textContent = h.length ? t("cdlNote", { hist: h.map(x => `${x.year} ${x.category}`).join(" · ") }) : "";
   }
   function applySlope() {
     const sl = climate.extra && climate.extra.slope;
@@ -203,7 +225,7 @@
   }
 
   function drawComparison(cmp, main, prios, irrigation, soil) {
-    $("cmpHint").textContent = t("cmpHint", { n: cmp.evaluated, main: cname(main) });
+    $("cmpHint").textContent = t("cmpHint", { n: cmp.evaluated, main: cname(cmp.anchor) });
     const S = cmp.strategies;
     const bestTotal = Math.max(...S.map(s => s.total));
     const head = `<tr><th>${t("strategy")}</th>${S.map(s => `<th>${t("s_" + s.key).split("·")[0].trim()}</th>`).join("")}</tr>`;
@@ -242,6 +264,7 @@
     if (heatL.length) ev.push(t("ev_heat", { list: heatL.join(", ") }));
     if (frostL.length) ev.push(t("ev_frost", { list: frostL.join(", ") }));
     if (!heatL.length && !frostL.length) ev.push(t("ev_climate_ok"));
+    if (s.key === "current" && cdlCrops().length >= 3) ev.push(t("ev_cdl", { hist: cdlCrops().slice(-3).map(x => `${x.year} ${x.category}`).join(", ") }));
     if (s.key === "current" && lowGreen().length) ev.push(t("ev_ndvi", { year: climate.extra.ndvi.year, low: monthsList(lowGreen()) }));
 
     // Benefits

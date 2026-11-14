@@ -24,10 +24,12 @@
   // Evaluate one rotation crop for one consecutive period of months.
   function evaluatePeriod(climate, crop, period) {
     let tempOk = 0, rain = 0, frostDays = 0;
-    const tooCold = [], tooHot = [];
+    const tooCold = [], tooHot = [], dormant = [];
     for (const m of period) {
       const t = climate.monthly.T2M[m - 1];
       if (t >= crop.tMin && t <= crop.tMax) tempOk++;
+      // Frost-tolerant winter crops (rye, vetch…) survive cold months dormant: partial credit down to tMin − 10 °C
+      else if (t < crop.tMin && crop.frost === "tolerant" && t >= crop.tMin - 10) { tempOk += 0.6; dormant.push(m); }
       else if (t < crop.tMin) tooCold.push(m);
       else tooHot.push(m);
       rain += precipMm(climate, m - 1);
@@ -38,7 +40,7 @@
     const waterScore = Math.min(1, waterRatio);
     const frostOk = crop.frost === "tolerant" || frostDays < 1;
     const climateScore = 100 * (0.45 * tempFrac + 0.35 * waterScore + 0.2 * (frostOk ? 1 : 0)) * (frostOk ? 1 : 0.4);
-    return { period, tempFrac, rain: Math.round(rain), waterRatio: round(waterRatio), frostDays: round(frostDays, 1), frostOk, tooCold, tooHot, climateScore };
+    return { period, tempFrac, rain: Math.round(rain), waterRatio: round(waterRatio), frostDays: round(frostDays, 1), frostOk, tooCold, tooHot, dormant, climateScore };
   }
 
   // Best consecutive period of crop.months inside the fallow window.

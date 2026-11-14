@@ -79,7 +79,16 @@
     const plantings = [];
     seq.forEach((c, y) => {
       const p = { kind: "main", crop: c, year: y, slots: [] };
-      for (const m of c.growMonths) { const s = slots[y * 12 + posOf(m)]; s.kind = "main"; s.crop = c; p.slots.push(s.i); }
+      // Place from the sowing month on; a crop that runs past September spills into the next
+      // agricultural year (circular). A month already used by another main crop is skipped.
+      if (c.growMonths.length) {
+        const start = y * 12 + posOf(c.growMonths[0]);
+        for (let k = 0; k < c.growMonths.length; k++) {
+          const s = slots[(start + k) % N];
+          if (s.kind === "main") continue;
+          s.kind = "main"; s.crop = c; p.slots.push(s.i);
+        }
+      }
       plantings.push(p);
     });
     if (opts.covers) {
@@ -111,7 +120,7 @@
       p.rain = Math.round(p.slots.reduce((s, i) => s + rain(climate, slots[i].month), 0));
       p.need = p.crop.water;
       p.stored = 0;
-      if (p.kind === "main" && gw.length === 12) {
+      if (p.kind === "main" && gw.length === 12 && p.slots.length) {
         const sow = slots[p.slots[0]], prev = slots[(p.slots[0] + N - 1) % N];
         const cap = SOIL_STORE[(opts.soil || DEFAULT_SOIL).texture] || 150;
         let st = cap * clamp((gw[sow.month - 1] - 0.3) / 0.6);
@@ -143,6 +152,7 @@
     const riskPerYear = (heat.length + frost.length) / YEARS;
     const sideIncome = covers.filter(p => p.crop.market >= 2 || p.crop.forage >= 3).length / YEARS;
     const marketAvg = mains.reduce((s, p) => s + p.crop.market, 0) / mains.length;
+    const fallowYears = mains.filter(p => !p.slots.length).length;
 
     const scores = {
       soil: clamp(1 - rainOnBare / annualRain),
@@ -168,7 +178,7 @@
         needPerYear: Math.round(need / YEARS), irrigationPerYear: Math.round(irrigation / YEARS), storedPerYear: Math.round(stored / YEARS),
         nBalance: r1(nBalance), organic: r1(organic), forage: r1(forage),
         repeats, bridges, families, heat, frost, coverCount: covers.length,
-        tightCovers: covers.filter(p => p.tight).length
+        tightCovers: covers.filter(p => p.tight).length, fallowYears
       }
     };
   }
@@ -190,9 +200,14 @@
     const s1 = { key: "current", ...evaluateRotation(climate, current, rotationCrops, { ...o, covers: false }) };
     const s2 = { key: "current_cover", ...evaluateRotation(climate, current, rotationCrops, { ...o, covers: true }) };
 
-    const anchor = current[0];
+    const anchor = current.find(c => !c.noOptimize) || current[0]; // keep the farmer's main (non-fallow) crop
     const seen = new Set(), all = [];
-    for (const a of mains) for (const b of mains) for (const c of mains) {
+    // no fallow years; for crops of the same group (silage maize / grain corn) keep only the farmer's version
+    const used = new Set(current.map(c => c.id));
+    const groupPick = {};
+    for (const c of mains) if (c.group && (used.has(c.id) || !groupPick[c.group])) groupPick[c.group] = groupPick[c.group] && used.has(groupPick[c.group].id) ? groupPick[c.group] : c;
+    const cand = mains.filter(c => (!c.noOptimize || c === anchor) && (!c.group || groupPick[c.group] === c || used.has(c.id)));
+    for (const a of cand) for (const b of cand) for (const c of cand) {
       const seq = [a, b, c];
       if (!seq.includes(anchor)) continue;
       // rotate so the farmer's main crop is year 1 (easier to read)
@@ -211,7 +226,7 @@
     const strategies = [s1, s2];
     if (best) strategies.push({ key: "optimized", ...best });
     if (alt) strategies.push({ key: "alternative", ...alt });
-    return { strategies, evaluated: all.length, ranking: all.slice(0, 10), weights: weights(o.priorities, o.irrigation, o.soil) };
+    return { anchor, strategies, evaluated: all.length, ranking: all.slice(0, 10), weights: weights(o.priorities, o.irrigation, o.soil) };
   }
 
   const api = { YEARS, AG, posOf, weights, SOIL_STORE, DEFAULT_SOIL, bareGaps, buildTimeline, evaluateRotation, compareRotations, canonical };

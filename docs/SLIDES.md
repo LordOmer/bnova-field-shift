@@ -1,6 +1,6 @@
 # Field Shift – Presentation (max 7 slides, 3–5 min)
 
-Team BNova · NASA Space Apps Challenge 2026 · Yalova
+Team BNöva · NASA Space Apps Challenge 2026 · Yalova
 
 - Slide text is in English for the judges and the submission. Speaker notes (konuşma notu) are in Turkish.
 - Rules: no NASA logo, flag or emblem on the slides.
@@ -19,7 +19,7 @@ Suggested timing: 1) 30 s · 2) 30 s · 3) 75 s · 4) 40 s · 5) 40 s · 6) 30 s
 - Climate is shifting (Yalova 2004–2023): **+0.53 °C / decade, −7.5 frost days / decade, +38 mm rain / decade**
 
 **Konuşma notu:**
-Merhaba, biz BNova. Yalova'da her yıl silajlık mısır eken bir çiftçiyi düşünün. Tarla yılda yaklaşık 7 ay boş kalıyor. NASA verisine göre yıllık 648 milimetre yağışın yaklaşık 468 milimetresi çıplak toprağa düşüyor; bu, erozyon ve besin kaybı demek. Her yıl aynı ürün olduğu için azot dengesi eksiye düşüyor ve hastalık döngüsü kırılmıyor. Bir de iklim değişiyor: son 20 yılda Yalova'da sıcaklık on yılda yarım derece arttı, don günleri on yılda yedi buçuk gün azaldı. Çiftçinin elinde "hangi nöbeti yapayım" sorusuna yerel veriyle cevap veren basit bir araç yok.
+Merhaba, biz BNöva. Yalova'da her yıl silajlık mısır eken bir çiftçiyi düşünün. Tarla yılda yaklaşık 7 ay boş kalıyor. NASA verisine göre yıllık 648 milimetre yağışın yaklaşık 468 milimetresi çıplak toprağa düşüyor; bu, erozyon ve besin kaybı demek. Her yıl aynı ürün olduğu için azot dengesi eksiye düşüyor ve hastalık döngüsü kırılmıyor. Bir de iklim değişiyor: son 20 yılda Yalova'da sıcaklık on yılda yarım derece arttı, don günleri on yılda yedi buçuk gün azaldı. Çiftçinin elinde "hangi nöbeti yapayım" sorusuna yerel veriyle cevap veren basit bir araç yok.
 
 ---
 
@@ -57,7 +57,7 @@ Canlı gösteriyoruz. Yalova'yı seçiyoruz; SRTM yükseklik verisinden eğim ot
 - **NASA POWER** (2004–2023): temperature, max/min, rain, frost days, root-zone soil wetness → climate fit, irrigation need, stored soil water
 - **SRTM elevation** (via Open-Elevation): slope from 5 points → steep slope raises erosion weight
 - **MODIS Terra NDVI** (MOD13Q1, 250 m, via ORNL DAAC): least-green months = likely bare soil
-- Optimizer: keeps year-1 crop, tests **43** distinct 3-year rotations of 7 crops, best of **12 cover crops** in every bare window
+- Optimizer: keeps year-1 crop, tests **73** distinct 3-year rotations of 10 crops, best of **12 cover crops** in every bare window
 - 7 sub-scores: soil cover · nitrogen · organic matter · water · pest break · climate risk · income
 
 **Konuşma notu:**
@@ -66,7 +66,7 @@ Canlı gösteriyoruz. Yalova'yı seçiyoruz; SRTM yükseklik verisinden eğim ot
 - SRTM yükseklik verisinden eğimi hesaplıyoruz; dik arazide erozyon ağırlığı artıyor.
 - MODIS uydusunun NDVI verisi bölgede toprağın ne zaman çıplak kaldığını gösteriyor.
 
-Optimizasyonda endüstri mühendisliği yaklaşımını kullandık: çiftçinin ilk yıl ürünü sabit kalıyor, 43 farklı üç yıllık rotasyon deneniyor ve her boş pencereye 12 örtü bitkisinden en uygunu yerleşiyor. Su puanı, yıllık sulama ihtiyacının çiftçinin sağlayabildiği suya oranından hesaplanıyor.
+Optimizasyonda endüstri mühendisliği yaklaşımını kullandık: çiftçinin ilk yıl ürünü sabit kalıyor, 73 farklı üç yıllık rotasyon deneniyor ve her boş pencereye 12 örtü bitkisinden en uygunu yerleşiyor. Su puanı, yıllık sulama ihtiyacının çiftçinin sağlayabildiği suya oranından hesaplanıyor.
 
 ---
 
@@ -126,7 +126,7 @@ Her kartta bilinmeyenler ve uzmana sorulacak riskler yazıyor. Araç uzmanın ye
 - Validate crop data with agronomists and the provincial agriculture directorate · pilot farms in Yalova
 - Add **SMAP** soil moisture, **GPM IMERG** extreme rain, **Sentinel-2 / Landsat** field-scale NDVI
 
-**Team BNova:** Berrak · Nisa Nur (Industrial Eng.: data analysis, optimization) · Ömer (Computer Eng.: software, web)
+**Team BNöva:** Berrak · Nisa Nur (Industrial Eng.: data analysis, optimization) · Ömer (Computer Eng.: software, web)
 lordomer.github.io/bnova-field-shift
 *AI use declared: Claude (Anthropic) assisted with code, data scripts and text drafts; reviewed by the team. No AI images.*
 

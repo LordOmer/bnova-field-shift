@@ -52,5 +52,7 @@
     return ndvi.monthly.map((v, i) => (v !== null && v < threshold ? i + 1 : null)).filter(Boolean);
   }
 
-  root.NasaExtra = { fetchSlope, fetchNdvi, lowGreenMonths };
-})(window);
+  const api = { fetchSlope, fetchNdvi, lowGreenMonths };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  else root.NasaExtra = api;
+})(typeof window !== "undefined" ? window : globalThis);
