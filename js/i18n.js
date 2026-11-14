@@ -3,7 +3,7 @@
   const I18N = {
     en: {
       months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      title: "Field Shift – BNöva | Crop rotation helper with NASA data",
+      title: "Field Shift – TARSA | Crop rotation helper with NASA data",
       tagline: "Compare crop rotations for your field using 20 years of NASA climate data: what to grow, when the soil is bare, and what each choice means for soil, water and risk.",
       disclaimer: "<b>Decision support, not a prescription.</b> Field Shift shows patterns and possibilities from NASA climate data. It does not replace your own experience or a local agricultural expert. Check every suggestion locally before you change your rotation.",
       location: "Location", latitude: "Latitude", longitude: "Longitude", load: "Load NASA data",
@@ -103,7 +103,7 @@
         "<b>Scores</b> are relative: they compare options for the same place, they do not predict yield or profit. Weights: 8 sub-scores, each weight raised when you tick a priority or have little irrigation water.",
         "<b>Not included yet:</b> measured soil type and pH, field-scale imagery (Landsat/Sentinel-2), rainfall extremes (GPM IMERG), SMAP soil moisture, local prices and subsidies.",
         "<b>AI use:</b> code, data scripts and text drafts were written with help from Claude (Anthropic) and reviewed by the team. No AI images are used.",
-        "Built by team BNöva during NASA Space Apps Challenge 2026, Yalova. No NASA endorsement implied."
+        "Built by team TARSA during NASA Space Apps Challenge 2026, Yalova. No NASA endorsement implied."
       ],
       st_showing: "Showing {name} ({src}).",
       st_embedded: "Showing {name}: NASA POWER data {period}, embedded so it works offline. Pick another location to load live data.",
@@ -181,7 +181,7 @@
     },
     tr: {
       months: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-      title: "Field Shift – BNöva | NASA verisiyle ekim nöbeti yardımcısı",
+      title: "Field Shift – TARSA | NASA verisiyle ekim nöbeti yardımcısı",
       tagline: "Tarlan için ekim nöbetlerini 20 yıllık NASA iklim verisiyle karşılaştır: ne ekilir, toprak ne zaman boş kalır, her seçim toprak, su ve risk için ne anlama gelir.",
       disclaimer: "<b>Karar desteğidir, reçete değildir.</b> Field Shift, NASA iklim verisinden örüntüleri ve olasılıkları gösterir. Senin deneyiminin ya da yerel tarım uzmanının yerini tutmaz. Rotasyonunu değiştirmeden önce her öneriyi yerelde kontrol et.",
       location: "Konum", latitude: "Enlem", longitude: "Boylam", load: "NASA verisini yükle",
@@ -281,7 +281,7 @@
         "<b>Skorlar</b> görecelidir: aynı yer için seçenekleri karşılaştırır, verim ya da kâr tahmini yapmaz. Ağırlıklar: 8 alt skor; öncelik işaretlediğinde ya da sulama suyun az olduğunda ilgili ağırlık artar.",
         "<b>Henüz dahil değil:</b> ölçülmüş toprak tipi ve pH, tarla ölçeğinde görüntü (Landsat/Sentinel-2), aşırı yağış (GPM IMERG), SMAP toprak nemi, yerel fiyatlar ve destekler.",
         "<b>YZ kullanımı:</b> kod, veri betikleri ve metin taslakları Claude (Anthropic) yardımıyla yazıldı ve takım tarafından kontrol edildi. YZ görseli kullanılmadı.",
-        "BNöva takımı tarafından NASA Space Apps Challenge 2026 Yalova etkinliğinde geliştirildi. NASA onayı ima edilmez."
+        "TARSA takımı tarafından NASA Space Apps Challenge 2026 Yalova etkinliğinde geliştirildi. NASA onayı ima edilmez."
       ],
       st_showing: "{name} gösteriliyor ({src}).",
       st_embedded: "{name} gösteriliyor: NASA POWER verisi {period}, çevrimdışı çalışsın diye gömülü. Canlı veri için başka konum seç.",

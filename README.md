@@ -1,4 +1,4 @@
-# Field Shift – by BNöva 🌱
+# Field Shift – by TARSA 🌱
 
 **NASA Space Apps Challenge 2026 · Yalova, Turkey · Challenge: [Field Shift: Adapting Farms with NASA Data](https://www.spaceappschallenge.org/2026/challenges/adapting-farms-with-nasa-data/)**
 

@@ -1,4 +1,4 @@
-# BNöva – Hackathon Planı (Field Shift)
+# TARSA – Hackathon Planı (Field Shift)
 
 ## Tek cümlelik problem
 Türkiye'de birçok tarla ana ürünler arasında aylarca boş kalıyor ve çiftçinin, kendi bölgesinin değişen iklimine göre bu boşluğa hangi ürünü ekeceğini görebileceği basit bir araç yok. Field Shift, 20 yıllık NASA iklim verisiyle bu boşluk için ekim nöbeti önerisi veriyor.
@@ -35,7 +35,7 @@ Türkiye'de birçok tarla ana ürünler arasında aylarca boş kalıyor ve çift
 - YZ'yi nerede kullandınız? → Kod ve metin taslağında Claude; sonuçları ekip kontrol etti.
 
 ## Gönderim kontrol listesi
-- [ ] Tüm üyeler BNöva'da onaylı ve Yalova'ya kayıtlı
+- [ ] Tüm üyeler TARSA'da onaylı ve Yalova'ya kayıtlı
 - [ ] Proje adı, özet, ayrıntılı açıklama İngilizce
 - [ ] Demo: ≤7 slayt (İngilizce) **veya** ≤30 sn video (İngilizce altyazılı), herkese açık link
 - [ ] Final proje linki (GitHub Pages) gizli pencerede açılıyor

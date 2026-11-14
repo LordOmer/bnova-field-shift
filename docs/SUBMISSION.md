@@ -1,4 +1,4 @@
-# Field Shift – NASA Space Apps 2026 Submission (Team BNöva, Yalova)
+# Field Shift – NASA Space Apps 2026 Submission (Team TARSA, Yalova)
 
 > Paste-ready text for the project submission form. Results below use the app defaults (priorities: nitrogen + erosion; irrigation: limited; soil: loamy, gentle slope, medium organic matter). Scores can shift by 1–2 points after small model tweaks, so they are given as "≈".
 
@@ -258,7 +258,7 @@ POWER combines satellite observations with model/reanalysis products (e.g. MERRA
 - **No AI-generated images, video or audio** are used.
 - No NASA logo, flag or emblem is used.
 
-## Team BNöva
+## Team TARSA
 - **Ömer**: 2nd-year Computer Engineering; software, web app, NASA data integration, publishing
 - **Berrak**: 3rd-year Industrial Engineering; data analysis, optimization, crop data review
 - **Nisa Nur**: 3rd-year Industrial Engineering; data analysis, optimization, presentation

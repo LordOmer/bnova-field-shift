@@ -1,6 +1,6 @@
 # Field Shift – Presentation (max 7 slides, 3–5 min)
 
-Team BNöva · NASA Space Apps Challenge 2026 · Yalova
+Team TARSA · NASA Space Apps Challenge 2026 · Yalova
 
 - Slide text is in English for the judges and the submission. Speaker notes (konuşma notu) are in Turkish.
 - Rules: no NASA logo, flag or emblem on the slides.
@@ -19,7 +19,7 @@ Suggested timing: 1) 30 s · 2) 30 s · 3) 75 s · 4) 40 s · 5) 40 s · 6) 30 s
 - Climate is shifting (Yalova 2004–2023): **+0.53 °C / decade, −7.5 frost days / decade, +38 mm rain / decade**
 
 **Konuşma notu:**
-Merhaba, biz BNöva. Yalova'da her yıl silajlık mısır eken bir çiftçiyi düşünün. Tarla yılda yaklaşık 7 ay boş kalıyor. NASA verisine göre yıllık 648 milimetre yağışın yaklaşık 468 milimetresi çıplak toprağa düşüyor; bu, erozyon ve besin kaybı demek. Her yıl aynı ürün olduğu için azot dengesi eksiye düşüyor ve hastalık döngüsü kırılmıyor. Bir de iklim değişiyor: son 20 yılda Yalova'da sıcaklık on yılda yarım derece arttı, don günleri on yılda yedi buçuk gün azaldı. Çiftçinin elinde "hangi nöbeti yapayım" sorusuna yerel veriyle cevap veren basit bir araç yok.
+Merhaba, biz TARSA. Yalova'da her yıl silajlık mısır eken bir çiftçiyi düşünün. Tarla yılda yaklaşık 7 ay boş kalıyor. NASA verisine göre yıllık 648 milimetre yağışın yaklaşık 468 milimetresi çıplak toprağa düşüyor; bu, erozyon ve besin kaybı demek. Her yıl aynı ürün olduğu için azot dengesi eksiye düşüyor ve hastalık döngüsü kırılmıyor. Bir de iklim değişiyor: son 20 yılda Yalova'da sıcaklık on yılda yarım derece arttı, don günleri on yılda yedi buçuk gün azaldı. Çiftçinin elinde "hangi nöbeti yapayım" sorusuna yerel veriyle cevap veren basit bir araç yok.
 
 ---
 
@@ -126,7 +126,7 @@ Her kartta bilinmeyenler ve uzmana sorulacak riskler yazıyor. Araç uzmanın ye
 - Validate crop data with agronomists and the provincial agriculture directorate · pilot farms in Yalova
 - Add **SMAP** soil moisture, **GPM IMERG** extreme rain, **Sentinel-2 / Landsat** field-scale NDVI
 
-**Team BNöva:** Berrak · Nisa Nur (Industrial Eng.: data analysis, optimization) · Ömer (Computer Eng.: software, web)
+**Team TARSA:** Berrak · Nisa Nur (Industrial Eng.: data analysis, optimization) · Ömer (Computer Eng.: software, web)
 lordomer.github.io/bnova-field-shift
 *AI use declared: Claude (Anthropic) assisted with code, data scripts and text drafts; reviewed by the team. No AI images.*
 
