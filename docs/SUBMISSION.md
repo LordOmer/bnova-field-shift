@@ -112,7 +112,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 
 ## Tools, languages, hardware
 - three.js r128 (MIT licence) from cdnjs for the 3D view; OpenTopoData public API for SRTM 30 m elevation grids.
-- **Languages:** HTML5, CSS3, JavaScript (no frameworks or external libraries), Python 3 (standard library only).
+- **Languages:** HTML5, CSS3, JavaScript (no frameworks; one library, three.js, for the 3D view), Python 3 (standard library) and Node.js scripts for data downloads.
 - **Data access (all from the browser, no API keys):**
   - NASA POWER REST API.
   - Open-Elevation API (SRTM-based elevation).
