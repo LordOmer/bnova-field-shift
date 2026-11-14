@@ -11,7 +11,7 @@
 https://lordomer.github.io/bnova-field-shift/ (public, no login)
 
 ## Short summary (≈100 words)
-Many fields stay bare for months between main crops, and often the same crop is grown every year. Field Shift is a free, phone-friendly web tool that compares a farmer's current 3-year rotation with better options. It combines three NASA datasets, all fetched live: NASA POWER climate and soil wetness (2004–2023), SRTM elevation for slope, and MODIS NDVI to show when local land is bare. For Yalova, "silage maize every year" scores ≈29/100. Adding a winter vetch + oat cover crop raises it to ≈72, and the optimizer's best rotation reaches ≈86. Every plan explains why it was suggested, gives its evidence and lists what a local expert should check.
+Many fields stay bare for months between main crops, and often the same crop is grown every year. Field Shift is a free, phone-friendly web tool that compares a farmer's current 3-year rotation with better options. It combines three NASA datasets, all fetched live: NASA POWER climate and soil wetness (2004–2023), SRTM elevation for slope, and MODIS NDVI to show when local land is bare. On a Nebraska field where the USDA Cropland Data Layer shows corn every year, today's rotation scores ≈46/100; a rye + hairy vetch winter cover raises it to ≈63 and the best rotation found reaches ≈83. In our home region Yalova, Türkiye, the same tool goes ≈25 → ≈65 → ≈81. Every plan explains why it was suggested, gives its evidence and lists what a local expert should check.
 
 ## What does it do / how does it work?
 **For the farmer or extension advisor:**
@@ -71,28 +71,28 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - A Python script (standard library only) downloads NASA POWER data as JSON/CSV for offline analysis.
 
 ## Example results (real app output)
-**Yalova, silage maize every year** (defaults: nitrogen + erosion, limited irrigation, loamy soil, gentle slope, medium organic matter):
+**Yalova, silage maize every year** (defaults: nitrogen + erosion, limited irrigation, loamy soil, gentle slope, medium organic matter). Türkiye has no open field-level crop map like the USDA CDL, so this current rotation is an example the farmer replaces with their own:
 
 | Strategy | Score | Evidence |
 |---|---|---|
-| A. Silage maize every year, bare in winter | **≈29** | Field bare ≈7 months/yr. ≈468 mm of the 648 mm yearly rain falls on bare soil. Irrigation ≈311 mm/yr. Nitrogen balance −3. No pest break. |
-| B. Same + vetch/oat winter cover | **≈72** | Rain on bare soil drops to ≈45 mm/yr. Legume adds nitrogen. Main crop unchanged. |
-| C. Optimizer's best: silage maize → sunflower → spring chickpea, with vetch/oat covers | **≈86** | Nitrogen +1.7. Irrigation ≈194 mm/yr. Crop-family break every year. Flagged risks: frost in March for spring chickpea; heat spike in July (T2M_MAX ≈35 °C). |
+| A. Silage maize every year, bare in winter | **≈25** | Field bare ≈7 months/yr. ≈468 mm of the 648 mm yearly rain falls on bare soil. Irrigation ≈296 mm/yr. Nitrogen balance −3. No pest break. |
+| B. Same + vetch/oat winter cover | **≈65** | Rain on bare soil drops to ≈45 mm/yr. Legume adds nitrogen. Main crop unchanged. |
+| C. Optimizer's best: silage maize → winter canola → spring chickpea, with rye/vetch and vetch/oat covers | **≈81** | Rain on bare soil ≈57 mm/yr. Irrigation ≈108 mm/yr. Nitrogen +0.3. Crop-family break every year. Flagged risks: frost in March for spring chickpea; heat spike at maize flowering in July (T2M_MAX ≈35 °C). |
 
 **Context data for Yalova:**
 - SRTM: 52 m elevation, slope 5.1% (gentle).
 - MODIS 2025: greenest month April (NDVI 0.59). Least green February, July, August and September (≈0.31), which are likely bare or harvested months.
 
-**Konya (37.95 N, 32.70 E), loaded live:**
+**Konya (37.95 N, 32.70 E):**
 - Yearly rain ≈380 mm.
-- Maize every year: A ≈26 → B ≈68 → C ≈75.
+- Maize every year: A ≈22 → B ≈55 → C ≈73.
 - SRTM: 1003 m, slope 0.4% (flat).
 - MODIS: least green July–November (NDVI ≈0.14), meaning bare after harvest.
 - The drier climate gives lower and different results than Yalova.
 
 **Water constraint check (Yalova, wheat every year, no irrigation):**
 - A ≈67.
-- Best found: wheat → chickpea → chickpea (+ vetch/oat). Alternative: wheat → barley → chickpea.
+- Best found: wheat → chickpea → chickpea (≈86, ≈19 mm irrigation a year). Alternative: wheat → canola → chickpea (≈82, ≈10 mm).
 - Both need almost no irrigation, so the optimizer respects the farmer's water limit and does not push thirsty crops.
 
 ## Benefits & impact
@@ -106,7 +106,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 
 ## What we hope to achieve
 - Make "what should I plant in the gap, and what should I rotate?" a 2-minute, evidence-based conversation between a farmer and an advisor.
-- Show that the smallest step, adding a cover crop without changing the main crop, already improves soil health a lot (Yalova: ≈29 → ≈72).
+- Show that the smallest step, adding a cover crop without changing the main crop, already improves soil health a lot (Yalova: ≈25 → ≈65; Iowa: ≈66 → ≈89).
 - Validate the crop parameters with local agronomists and the provincial agriculture directorate, then pilot on a few farms around Yalova.
 - Add SMAP soil moisture and GPM IMERG extreme-rain data to move further from regional toward field-scale advice.
 
@@ -163,11 +163,11 @@ A 3D view puts the farmer's current rotation (A) next to the best different rota
 - **Irrigation water:** in months where rain is below the crop's (approximate, evenly spread) monthly need, sprinklers run if water is available; with no irrigation the plants turn yellow and shorter (water stress) and the deficit is shown in mm.
 - **NASA climate per month:** rain falls as drops (blue on plants, orange on bare soil), frost days give a hoar-frost tint, heat-spike months (hottest day ≥ 32 °C) a warm light, and the land around the field takes the colour of that month's MODIS NDVI.
 - **Priorities:** they change strategy C, so the right-hand field changes too.
-A 36-month slider with play and a running "rain on bare soil so far" counter show the difference over the whole rotation (Nebraska: ≈590 mm vs 0 mm over three years). Built with three.js r128 (MIT), loaded only when the section is visible; without WebGL the rest of the app works unchanged.
+A 36-month slider with play and a running "rain on bare soil so far" counter show the difference over the whole rotation (Nebraska: ≈590 mm vs ≈0 mm over three years). Built with three.js r128 (MIT), loaded only when the section is visible; without WebGL the rest of the app works unchanged.
 
 ## Example results – USA (embedded presets, USDA Cropland Data Layer + NASA data)
 The app opens on the Nebraska example by default; `?loc=iowa`, `?loc=kansas`, `?loc=yalova` open the others. Default settings: priorities nitrogen + erosion, limited irrigation, loamy soil.
-- **Nebraska – York County (40.95, −97.45):** the CDL shows corn every year 2019–2025. NASA POWER: the field is bare ≈6 months a year and ≈197 mm of its 716 mm yearly rain falls on bare soil; the hottest July day (corn flowering) reaches ≈38 °C. A (corn × 3) ≈46 → B (+ cereal rye/hairy vetch winter cover) ≈63 → C corn → soybean → soybean with rye/vetch cover ≈83. Rye + hairy vetch is chosen because NASA POWER's coldest nights (T2M_MIN) rule out less winter-hardy covers (crimson clover, field pea). Trade-off shown openly: cover crops use stored soil water, irrigation need ≈88 → ≈146 mm a year.
+- **Nebraska – York County (40.95, −97.45):** the CDL shows corn every year 2019–2025. NASA POWER: the field is bare ≈6 months a year and ≈197 mm of its 716 mm yearly rain falls on bare soil; the hottest July day (corn flowering) reaches ≈38 °C. A (corn × 3) ≈46 → B (+ cereal rye/hairy vetch winter cover) ≈63 → C corn → soybean → soybean with rye/vetch cover ≈83. Rye + hairy vetch is chosen because NASA POWER's coldest nights (T2M_MIN) rule out less winter-hardy covers (crimson clover, field pea). Trade-off shown openly: the winter cover needs water too (≈60 mm more a year, from stored soil water or irrigation), so in a dry spring it should be ended early. C repeats soybean, and the app flags that as a pest/disease risk; the alternative D (corn → soybean → canola + cowpea, ≈81) fully breaks the pest cycle.
 - **Iowa – Boone County (42.20, −93.80):** CDL corn/soybean alternation 2019–2025. A ≈66 → B (same corn–soy + rye/vetch winter cover) ≈89 → C ≈92. The winter cover is the biggest and simplest step.
 - **Kansas – McPherson County (38.10, −98.00):** CDL wheat, double-crop wheat/soy, corn, soybeans. A (soy → wheat → wheat) ≈65 → B ≈73 → C ≈84.
 - **Yalova, Türkiye:** silage maize every year ≈25 → B (+ vetch/oat) ≈65 → C ≈81.
