@@ -373,6 +373,7 @@
       if (c.market >= 3) tags.push(`<span class="tag">${t("t_market")}</span>`);
       if (f.waterRatio < 0.6) tags.push(`<span class="tag warn">${t("t_irrig")}</span>`);
       if (!f.frostOk) tags.push(`<span class="tag warn">${t("t_frost")}</span>`);
+      if (f.winterKill) tags.push(`<span class="tag warn">${t("t_wkill")}</span>`);
       why.push(t("w_rain", { rain: f.rain, need: c.water, pct: Math.round(f.waterRatio * 100) }));
       why.push(t("w_temp", { pct: Math.round(f.tempFrac * 100) }));
       if (f.tooCold.length) why.push(t("w_cold", { m: f.tooCold.map(mon).join(", ") }));

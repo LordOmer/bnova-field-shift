@@ -23,13 +23,16 @@
 
   // Evaluate one rotation crop for one consecutive period of months.
   function evaluatePeriod(climate, crop, period) {
+    const tmin = m => (climate.monthly.T2M_MIN ? climate.monthly.T2M_MIN[m - 1] : climate.monthly.T2M[m - 1] - 10);
+    const winterKill = crop.hardyC !== undefined && period.some(m => tmin(m) < crop.hardyC);
     let tempOk = 0, rain = 0, frostDays = 0;
     const tooCold = [], tooHot = [], dormant = [];
     for (const m of period) {
       const t = climate.monthly.T2M[m - 1];
       if (t >= crop.tMin && t <= crop.tMax) tempOk++;
-      // Frost-tolerant winter crops (rye, vetch…) survive cold months dormant: partial credit down to tMin − 10 °C
-      else if (t < crop.tMin && crop.frost === "tolerant" && t >= crop.tMin - 10) { tempOk += 0.6; dormant.push(m); }
+      // Frost-tolerant winter crops (rye, vetch…) survive cold months dormant: partial credit,
+      // as long as the month's coldest night (NASA POWER T2M_MIN) stays above the crop's winter hardiness
+      else if (t < crop.tMin && crop.frost === "tolerant" && (crop.hardyC === undefined ? t >= crop.tMin - 10 : tmin(m) >= crop.hardyC)) { tempOk += 0.6; dormant.push(m); }
       else if (t < crop.tMin) tooCold.push(m);
       else tooHot.push(m);
       rain += precipMm(climate, m - 1);
@@ -39,8 +42,9 @@
     const waterRatio = rain / crop.water;
     const waterScore = Math.min(1, waterRatio);
     const frostOk = crop.frost === "tolerant" || frostDays < 1;
-    const climateScore = 100 * (0.45 * tempFrac + 0.35 * waterScore + 0.2 * (frostOk ? 1 : 0)) * (frostOk ? 1 : 0.4);
-    return { period, tempFrac, rain: Math.round(rain), waterRatio: round(waterRatio), frostDays: round(frostDays, 1), frostOk, tooCold, tooHot, dormant, climateScore };
+    let climateScore = 100 * (0.45 * tempFrac + 0.35 * waterScore + 0.2 * (frostOk ? 1 : 0)) * (frostOk ? 1 : 0.4);
+    if (winterKill) climateScore *= 0.3; // a night colder than the crop survives: it would be winter-killed
+    return { period, tempFrac, rain: Math.round(rain), waterRatio: round(waterRatio), frostDays: round(frostDays, 1), frostOk, winterKill, tooCold, tooHot, dormant, climateScore };
   }
 
   // Best consecutive period of crop.months inside the fallow window.

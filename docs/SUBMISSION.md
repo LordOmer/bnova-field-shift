@@ -25,7 +25,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 4. **Compare three strategies over 3 years:**
    - **A. Current rotation**, as the farmer runs it today.
    - **B. Current rotation + cover crops** in every bare window.
-   - **C. Best rotations found by the optimizer.** It keeps the farmer's year-1 crop and tests every distinct 3-year rotation (73 with the current crop list, cyclic duplicates removed; silage maize and grain corn count as one crop group) of 10 main crops (wheat, barley, canola, silage maize, grain corn, soybean, grain sorghum, sunflower, chickpea, field tomato; "fallow year" can be entered as the current practice). Every bare window gets the best-fitting of 12 cover crops: vetch + oat, cereal rye, faba bean, field pea, crimson clover, lentil, mustard, chickpea, cowpea, sorghum-sudangrass, buckwheat and soybean.
+   - **C. Best rotations found by the optimizer.** It keeps the farmer's year-1 crop and tests every distinct 3-year rotation (73 with the current crop list, cyclic duplicates removed; silage maize and grain corn count as one crop group) of 10 main crops (wheat, barley, canola, silage maize, grain corn, soybean, grain sorghum, sunflower, chickpea, field tomato; "fallow year" can be entered as the current practice). Every bare window gets the best-fitting of 13 cover crops: vetch + oat, cereal rye, cereal rye + hairy vetch, faba bean, field pea, crimson clover, lentil, mustard, chickpea, cowpea, sorghum-sudangrass, buckwheat and soybean.
 5. **See climate trends for 2004–2023.** Yalova: +0.53 °C per decade, −7.5 frost days per decade, +38 mm rain per decade.
 
 **Scoring (0–100), from 7 sub-scores:**
@@ -155,10 +155,14 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Scores compare options with each other. They are not yield forecasts.
 
 ## Example results – USA (embedded presets, USDA Cropland Data Layer + NASA data)
-The app opens on the Nebraska example by default; `?loc=iowa`, `?loc=kansas`, `?loc=yalova` open the others.
-- **Nebraska – York County (40.95, −97.45):** the CDL shows corn every year 2019–2025. NASA POWER: the field is bare ≈6 months a year and ≈197 mm of its 716 mm yearly rain falls on bare soil. A (corn × 3) ≈53 → B (+ vetch/oat winter cover) ≈78 → C corn → corn → soybean with winter cover ≈90. Trade-off shown openly: cover crops use stored soil water, so the irrigation need rises from ≈38 to ≈143 mm a year.
-- **Iowa – Boone County (42.20, −93.80):** CDL corn/soybean alternation 2019–2025. A ≈66 → B (same corn–soy + winter cover) ≈95, which is higher than any different rotation (C ≈94): the tool says the simplest step is adding a cover crop. MODIS: greenest in July, least green October–April.
-- **Kansas – McPherson County (38.10, −98.00):** CDL wheat, double-crop wheat/soy, corn, soybeans. A (soy → wheat → wheat) ≈59 → B ≈77 → C soybean → sorghum → sorghum with covers ≈87.
+The app opens on the Nebraska example by default; `?loc=iowa`, `?loc=kansas`, `?loc=yalova` open the others. Default settings: priorities nitrogen + erosion, limited irrigation, loamy soil.
+- **Nebraska – York County (40.95, −97.45):** the CDL shows corn every year 2019–2025. NASA POWER: the field is bare ≈6 months a year and ≈197 mm of its 716 mm yearly rain falls on bare soil; the hottest July day (corn flowering) reaches ≈38 °C. A (corn × 3) ≈46 → B (+ cereal rye/hairy vetch winter cover) ≈63 → C corn → soybean → soybean with rye/vetch cover ≈83. Rye + hairy vetch is chosen because NASA POWER's coldest nights (T2M_MIN) rule out less winter-hardy covers (crimson clover, field pea). Trade-off shown openly: cover crops use stored soil water, irrigation need ≈88 → ≈146 mm a year.
+- **Iowa – Boone County (42.20, −93.80):** CDL corn/soybean alternation 2019–2025. A ≈66 → B (same corn–soy + rye/vetch winter cover) ≈89 → C ≈92. The winter cover is the biggest and simplest step.
+- **Kansas – McPherson County (38.10, −98.00):** CDL wheat, double-crop wheat/soy, corn, soybeans. A (soy → wheat → wheat) ≈65 → B ≈73 → C ≈84.
+- **Yalova, Türkiye:** silage maize every year ≈25 → B (+ vetch/oat) ≈65 → C ≈81.
+
+## Crop library sources
+Main-crop calendars, seasonal water needs and flowering heat limits were checked against FAO Crop Water Information, USDA-NASS *Usual Planting and Harvesting Dates* (Ag Handbook 628), TAGEM (Turkish Ministry research institutes) and university extension (Iowa State, Nebraska, K-State); cover-crop season length, winter hardiness, N fixation, erosion control and biomass against USDA SARE *Managing Cover Crops Profitably* (3rd ed.), NRCS plant guides and FAO. Every check, with URL, is in `docs/crop_check_main.md` and `docs/crop_check_cover.md`. Values are averages; local varieties differ.
 
 ## Judging criteria
 - **Impact:** a free, phone-friendly tool that turns NASA data into rotation plans that cut bare-soil exposure (Yalova: ≈468 → ≈45 mm/yr of rain on bare soil) and add nitrogen; scale: Turkey loses ≈642 Mt of soil to erosion per year and has 2.32 million registered farmers; agriculture uses ≈79% of its water.

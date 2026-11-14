@@ -10,7 +10,7 @@ Many fields stay bare for months between main crops, and the same crop is often 
 1. **Location**: pick a preset in Turkey or type coordinates. Loads 20 years (2004–2023) of NASA POWER climate data, SRTM slope and one year of MODIS satellite greenness.
 2. **Farmer inputs**: current 3-year rotation, irrigation water (none / limited / plenty), soil texture, slope (auto-filled from SRTM), organic matter, priorities (nitrogen, erosion, water, organic matter, feed, market).
 3. **Your field's year**: monthly rain, temperature, frost days, heat spikes, root-zone soil wetness and MODIS NDVI, with the bare window highlighted.
-4. **Rotation comparison**: A = your current rotation, B = current + cover crops, C = best rotation found, D = alternative using different crops. The optimizer tests every distinct 3-year sequence of 10 main crops that keeps your year-1 crop (73 rotations) and fills each bare window with the best-fitting of 12 cover crops.
+4. **Rotation comparison**: A = your current rotation, B = current + cover crops, C = best rotation found, D = alternative using different crops. The optimizer tests every distinct 3-year sequence of 10 main crops that keeps your year-1 crop (73 rotations) and fills each bare window with the best-fitting of 13 cover crops.
 5. **Explanations for every strategy**: why it was suggested, evidence (NASA numbers), benefits, information gaps and risks to check locally.
 6. **Climate trends**, glossary and an honest "Data, limits & honesty" section. English / Turkish.
 
@@ -36,7 +36,7 @@ Eight sub-scores, weighted by the farmer's priorities, water and soil:
 - [USDA NASS Cropland Data Layer](https://www.nass.usda.gov/Research_and_Science/Cropland/SARS1a.php) via the CropScape service: crop grown each year (2019–2025) at the US presets (Iowa, Kansas, Nebraska). It fills the farmer's current rotation automatically. Embedded with `data/fetch_presets.cjs` because the service blocks browser requests.
 
 ## Limits
-POWER is a ≈50 km grid, not field scale; soil wetness is modelled (MERRA-2); NDVI is a 2 × 2 km mix of fields; crop parameters are approximate rules of thumb and must be validated by agronomists; scores compare options, they do not predict yield or profit.
+POWER is a ≈50 km grid, not field scale; soil wetness is modelled (MERRA-2); NDVI is a 2 × 2 km mix of fields; crop parameters are FAO / USDA / TAGEM averages (sources in docs/crop_check_*.md) and should be validated locally by agronomists; scores compare options, they do not predict yield or profit.
 
 ## Files
 - `index.html`, `css/style.css`
