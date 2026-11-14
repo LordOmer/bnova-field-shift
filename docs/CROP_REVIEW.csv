@@ -10,7 +10,7 @@ Ana ürün;soybean_main;Soya fasulyesi;Soybean;May-Haz-Tem-Ağu-Eyl-Eki;Tem;legu
 Ana ürün;sorghum;Sorgum (dane);Grain sorghum;May-Haz-Tem-Ağu-Eyl-Eki;Ağu;grass;550;;hassas;;36;2;2;;;2;docs/crop_check_main.md;;
 Ana ürün;tomato;Domates (tarla);Field tomato;May-Haz-Tem-Ağu-Eyl;Tem;nightshade;500;;hassas;;35;3;0;;;3;docs/crop_check_main.md;;
 Ana ürün;fallow;Nadas (boş yıl);Fallow (no crop);— (boş yıl);;fallow;0;;dayanıklı;;;0;0;;;0;;;
-Örtü / ikinci ürün;vetch_oat;Fiğ + yulaf karışımı;Vetch + oat mix;6 ay;;legume;300;2 – 22;dayanıklı;-15;;3;2;2;2;2;docs/crop_check_cover.md;;
+Örtü / ikinci ürün;vetch_oat;Fiğ + yulaf karışımı;Vetch + oat mix;6 ay;;legume;300;2 – 22;dayanıklı;-10;;3;2;2;2;2;docs/crop_check_cover.md;;Yulaf ≈ -10 °C altında ölür; -15 iyimserdi (14 Kas)
 Örtü / ikinci ürün;rye;Çavdar (örtü bitkisi);Cereal rye (cover crop);6 ay;;grass;250;0 – 22;dayanıklı;-34;;0;3;3;2;1;docs/crop_check_cover.md;;
 Örtü / ikinci ürün;rye_vetch;Çavdar + fiğ karışımı;Cereal rye + hairy vetch mix;6 ay;;mix;300;1 – 22;dayanıklı;-30;;2;3;3;2;1;docs/crop_check_cover.md;;
 Örtü / ikinci ürün;faba;Bakla;Faba bean;4 ay;;legume;350;3 – 22;dayanıklı;-5;;3;2;2;2;2;docs/crop_check_cover.md;;

@@ -7,7 +7,7 @@ Live app: https://lordomer.github.io/bnova-field-shift/
 Many fields stay bare for months between main crops, and the same crop is often grown year after year. Bare soil loses topsoil and nutrients; monoculture builds up pests and drains nitrogen. Field Shift helps farmers **compare 3-year crop rotations** for their own location with NASA Earth observation data, their soil and their priorities. It is decision support, not a prescription.
 
 ## What it does
-1. **Location**: pick a preset in Turkey or type coordinates. Loads 20 years (2004–2023) of NASA POWER climate data, SRTM slope and one year of MODIS satellite greenness.
+1. **Location**: pick a preset (Türkiye or US Corn Belt; Nebraska opens by default) or type any coordinates. Loads 20 years (2004–2023) of NASA POWER climate data, SRTM slope and one year of MODIS satellite greenness.
 2. **Farmer inputs**: current 3-year rotation, irrigation water (none / limited / plenty), soil texture, slope (auto-filled from SRTM), organic matter, priorities (nitrogen, erosion, water, organic matter, feed, market).
 3. **Your field's year**: monthly rain, temperature, frost days, heat spikes, root-zone soil wetness and MODIS NDVI, with the bare window highlighted.
 4. **Rotation comparison**: A = your current rotation, B = current + cover crops, C = best rotation found, D = alternative using different crops. The optimizer tests every distinct 3-year sequence of 10 main crops that keeps your year-1 crop (73 rotations) and fills each bare window with the best-fitting of 13 cover crops.

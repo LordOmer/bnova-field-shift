@@ -442,7 +442,7 @@
       why.push(t("w_temp", { pct: Math.round(f.tempFrac * 100) }));
       if (f.tooCold.length) why.push(t("w_cold", { m: f.tooCold.map(mon).join(", ") }));
       if (f.tooHot.length) why.push(t("w_hot", { m: f.tooHot.map(mon).join(", ") }));
-      if (f.frostDays >= 1) why.push(t("w_frost", { d: f.frostDays }) + (c.frost === "tolerant" ? t("w_tol") : "") + ".");
+      if (f.frostDays >= 1) why.push(t("w_frost", { d: Math.round(f.frostDays) }) + (c.frost === "tolerant" ? t("w_tol") : "") + ".");
       const card = document.createElement("div"); card.className = "rec";
       card.innerHTML = `<div class="score">${r.total}<small>/100</small></div>
         <div><h3>${esc(cname(c))} <span>· ${esc(window.i18n.lang === "tr" ? c.en : c.tr)}</span></h3><div class="tags">${tags.join("")}</div>

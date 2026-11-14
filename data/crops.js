@@ -43,7 +43,7 @@
 
 (typeof window !== "undefined" ? window : globalThis).ROTATION_CROPS = [
   // Cool-season (autumn/winter) options
-  { id: "vetch_oat", tr: "Fiğ + yulaf karışımı", en: "Vetch + oat mix", months: 6, tMin: 2, tMax: 22, frost: "tolerant", water: 300, family: "legume", nfix: 3, erosion: 2, forage: 2, organic: 2, market: 2, hardyC: -15 },
+  { id: "vetch_oat", tr: "Fiğ + yulaf karışımı", en: "Vetch + oat mix", months: 6, tMin: 2, tMax: 22, frost: "tolerant", water: 300, family: "legume", nfix: 3, erosion: 2, forage: 2, organic: 2, market: 2, hardyC: -10 },
   { id: "rye", tr: "Çavdar (örtü bitkisi)", en: "Cereal rye (cover crop)", months: 6, tMin: 0, tMax: 22, frost: "tolerant", water: 250, family: "grass", nfix: 0, erosion: 3, forage: 2, organic: 3, market: 1, hardyC: -34 },
   { id: "rye_vetch", tr: "Çavdar + fiğ karışımı", en: "Cereal rye + hairy vetch mix", months: 6, tMin: 1, tMax: 22, frost: "tolerant", water: 300, family: "mix", nfix: 2, erosion: 3, forage: 2, organic: 3, market: 1, hardyC: -30 },
   { id: "faba", tr: "Bakla", en: "Faba bean", months: 4, tMin: 3, tMax: 22, frost: "tolerant", water: 350, family: "legume", nfix: 3, erosion: 2, forage: 2, organic: 2, market: 2, hardyC: -5 },
