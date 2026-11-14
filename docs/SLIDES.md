@@ -120,7 +120,7 @@ Her kartta bilinmeyenler ve uzmana sorulacak riskler yazıyor. Araç uzmanın ye
 **Impact**
 - Free, phone-friendly, bilingual, works almost anywhere on Earth
 - Less bare soil, more nitrogen from legumes, rotations that fit the farmer's water
-- [TEAM: add sourced number, e.g. TÜİK number of farm holdings / erosion figure]
+- Turkey: ≈642 Mt of soil lost to erosion per year · 79% of water used by agriculture · 2.32 M registered farmers (sources in docs/IMPACT_SOURCES.md)
 
 **Next steps**
 - Validate crop data with agronomists and the provincial agriculture directorate · pilot farms in Yalova

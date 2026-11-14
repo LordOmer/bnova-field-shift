@@ -101,7 +101,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - **Water:** irrigation need is shown in millimetres and capped by what the farmer can actually supply. A farmer without irrigation gets rotations that rain and stored soil water can carry.
 - **Climate resilience:** frost and heat checks use the location's own 20-year NASA record. The trend view shows a climate that is already shifting.
 - **Accessible and scalable:** free, phone-friendly, no account, no install, bilingual. It works anywhere NASA POWER, SRTM and MODIS have data, which is nearly worldwide. Users can be farmers, extension staff (e.g. provincial agriculture directorates) and agriculture students.
-- **Scale of the problem in Turkey:** [TEAM: add sourced number, e.g. TÜİK number of farm holdings / erosion figure]
+- **Scale of the problem in Turkey:** about 642 million tonnes of soil are lost to erosion every year (TEMA, citing the Ministry's ÇEM data, 2023); agriculture uses about 79% of the country's water (National Water Plan 2026–2035); about 3.5 million ha are left fallow (Ministry, 2018); and 2.32 million farmers are registered in ÇKS (2024). Worldwide, about 33% of soils are degraded (FAO). Sources: docs/IMPACT_SOURCES.md.
 - **Trust:** every recommendation shows its evidence and its unknowns, so an expert can quickly correct it.
 
 ## What we hope to achieve
@@ -155,7 +155,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Scores compare options with each other. They are not yield forecasts.
 
 ## Judging criteria
-- **Impact:** a free, phone-friendly tool that turns NASA data into rotation plans that cut bare-soil exposure (Yalova: ≈468 → ≈45 mm/yr of rain on bare soil) and add nitrogen; scale in Turkey: [TEAM: add sourced number, e.g. TÜİK number of farm holdings / erosion figure].
+- **Impact:** a free, phone-friendly tool that turns NASA data into rotation plans that cut bare-soil exposure (Yalova: ≈468 → ≈45 mm/yr of rain on bare soil) and add nitrogen; scale: Turkey loses ≈642 Mt of soil to erosion per year and has 2.32 million registered farmers; agriculture uses ≈79% of its water.
 - **Creativity:** an optimizer compares "today vs. small change vs. best" and combines climate, terrain and vegetation from three NASA datasets into one explained score.
 - **Validity:** every number traces to a named NASA parameter, the formulas are simple and shown, and the limits (grid size, modeled soil wetness, approximate crop data) are stated in the app.
 - **Relevance:** NASA POWER, SRTM and MODIS are the core of every score, and the tool answers the challenge's question of how farmers can pick rotations for soil health and changing weather.
