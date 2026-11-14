@@ -241,6 +241,6 @@ POWER combines satellite observations with model/reanalysis products (e.g. MERRA
 - No NASA logo, flag or emblem is used.
 
 ## Team BNöva
+- **Ömer**: 2nd-year Computer Engineering; software, web app, NASA data integration, publishing
 - **Berrak**: 3rd-year Industrial Engineering; data analysis, optimization, crop data review
 - **Nisa Nur**: 3rd-year Industrial Engineering; data analysis, optimization, presentation
-- **Ömer**: 2nd-year Computer Engineering; software, web app, NASA data integration, publishing
