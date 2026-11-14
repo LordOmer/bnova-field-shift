@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Field Shift – BNova | Crop rotation helper with NASA data</title>
+  <meta name="description" content="Compare crop rotations for your field with 20 years of NASA POWER climate data. NASA Space Apps Challenge 2026, team BNova (Yalova).">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌱%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap head">
+      <div>
+        <h1>🌱 Field Shift <span class="team">by BNova</span></h1>
+        <p class="tagline" data-i18n="tagline"></p>
+      </div>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="tr">TR</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="disclaimer" data-i18n-html="disclaimer"></p>
+
+    <section class="card controls">
+      <div class="row">
+        <label><span data-i18n="location"></span>
+          <select id="preset"></select>
+        </label>
+        <label><span data-i18n="latitude"></span> <input id="lat" type="number" step="0.01"></label>
+        <label><span data-i18n="longitude"></span> <input id="lon" type="number" step="0.01"></label>
+        <button id="load" data-i18n="load"></button>
+      </div>
+      <div class="row">
+        <fieldset id="rotation">
+          <legend data-i18n="currentRotation"></legend>
+          <label><span class="yr" data-year="1"></span><select id="y1"></select></label>
+          <label><span class="yr" data-year="2"></span><select id="y2"></select></label>
+          <label><span class="yr" data-year="3"></span><select id="y3"></select></label>
+        </fieldset>
+        <label><span data-i18n="irrigation"></span>
+          <select id="irrigation">
+            <option value="none" data-i18n="irr_none"></option>
+            <option value="limited" data-i18n="irr_limited"></option>
+            <option value="full" data-i18n="irr_full"></option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <fieldset id="soilbox">
+          <legend data-i18n="soilTitle"></legend>
+          <label><span data-i18n="texture"></span>
+            <select id="texture">
+              <option value="sand" data-i18n="tx_sand"></option>
+              <option value="loam" data-i18n="tx_loam"></option>
+              <option value="clay" data-i18n="tx_clay"></option>
+            </select>
+          </label>
+          <label><span data-i18n="slope"></span>
+            <select id="slope">
+              <option value="flat" data-i18n="sl_flat"></option>
+              <option value="gentle" data-i18n="sl_gentle"></option>
+              <option value="steep" data-i18n="sl_steep"></option>
+            </select>
+          </label>
+          <label><span data-i18n="om"></span>
+            <select id="om">
+              <option value="low" data-i18n="om_low"></option>
+              <option value="medium" data-i18n="om_medium"></option>
+              <option value="high" data-i18n="om_high"></option>
+            </select>
+          </label>
+          <span id="slopeNote" class="note"></span>
+        </fieldset>
+      </div>
+      <div class="row">
+        <fieldset id="priorities">
+          <legend data-i18n="priorities"></legend>
+          <label><input type="checkbox" value="nitrogen" checked> <span data-i18n="p_nitrogen"></span></label>
+          <label><input type="checkbox" value="erosion" checked> <span data-i18n="p_erosion"></span></label>
+          <label><input type="checkbox" value="water"> <span data-i18n="p_water"></span></label>
+          <label><input type="checkbox" value="organic"> <span data-i18n="p_organic"></span></label>
+          <label><input type="checkbox" value="forage"> <span data-i18n="p_forage"></span></label>
+          <label><input type="checkbox" value="market"> <span data-i18n="p_market"></span></label>
+        </fieldset>
+      </div>
+      <p id="status" class="status" role="status"></p>
+    </section>
+
+    <section class="card">
+      <h2><span data-i18n="calTitle"></span> <small id="placeName"></small></h2>
+      <p class="hint" data-i18n="calHint"></p>
+      <div id="calendar"></div>
+      <p id="ndviNote" class="hint"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="cmpTitle"></h2>
+      <p id="cmpHint" class="hint"></p>
+      <div id="cmpTable" class="tablewrap"></div>
+      <div class="legend" id="tlLegend"></div>
+      <div id="strategies" class="strategies"></div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="bareTitle"></h2>
+      <p id="windowText" class="hint"></p>
+      <div id="recs"></div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="trendTitle"></h2>
+      <div id="trendStats" class="stats"></div>
+      <div id="trendChart"></div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="glossTitle"></h2>
+      <div id="glossary" class="glossary"></div>
+    </section>
+
+    <section class="card sources">
+      <h2 data-i18n="limitsTitle"></h2>
+      <ul id="limits"></ul>
+    </section>
+  </main>
+
+  <script src="data/yalova.js"></script>
+  <script src="data/crops.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/rotation.js"></script>
+  <script src="js/nasa-extra.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
