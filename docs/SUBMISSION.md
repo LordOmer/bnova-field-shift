@@ -156,7 +156,14 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Scores compare options with each other. They are not yield forecasts.
 
 ## 3D living field
-A 3D view puts the farmer's current rotation (A) next to the best different rotation (C) on the real terrain around the point: a 21 × 21 NASA SRTM 30 m elevation grid (~2 × 2 km, via OpenTopoData, embedded for presets; height exaggeration stated on screen). A 36-month slider (with play) colours the field by what covers it each month and lets that month's NASA POWER rainfall fall as drops: blue on plants, orange on bare soil. In Nebraska in December the left field is bare and orange drops hit it; the right one is protected by a rye + hairy vetch cover. Built with three.js r128 (MIT), loaded only when the section scrolls into view; without WebGL the rest of the app works unchanged.
+A 3D view puts the farmer's current rotation (A) next to the best different rotation (C) and is built from every input on the page:
+- **Location:** a 21 × 21 NASA SRTM 30 m elevation grid (~2 × 2 km, via OpenTopoData, embedded for presets; height exaggeration stated on screen).
+- **Soil texture and organic matter:** a soil cut-away — subsoil colour by texture, a darker topsoil layer whose thickness follows organic matter, and a blue root-zone water band that rises and falls with NASA POWER soil wetness (GWETROOT) × the texture's water-holding capacity.
+- **Slope:** SRTM slope, or the farmer's own slope class, tilts the field; on bare soil orange-brown particles wash downhill, faster on steeper slopes.
+- **Irrigation water:** in months where rain is below the crop's (approximate, evenly spread) monthly need, sprinklers run if water is available; with no irrigation the plants turn yellow and shorter (water stress) and the deficit is shown in mm.
+- **NASA climate per month:** rain falls as drops (blue on plants, orange on bare soil), frost days give a hoar-frost tint, heat-spike months (hottest day ≥ 32 °C) a warm light, and the land around the field takes the colour of that month's MODIS NDVI.
+- **Priorities:** they change strategy C, so the right-hand field changes too.
+A 36-month slider with play and a running "rain on bare soil so far" counter show the difference over the whole rotation (Nebraska: ≈590 mm vs 0 mm over three years). Built with three.js r128 (MIT), loaded only when the section is visible; without WebGL the rest of the app works unchanged.
 
 ## Example results – USA (embedded presets, USDA Cropland Data Layer + NASA data)
 The app opens on the Nebraska example by default; `?loc=iowa`, `?loc=kansas`, `?loc=yalova` open the others. Default settings: priorities nitrogen + erosion, limited irrigation, loamy soil.

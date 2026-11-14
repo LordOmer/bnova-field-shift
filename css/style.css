@@ -100,3 +100,10 @@ table.cmp { border-collapse: collapse; width: 100%; min-width: 520px; font-size:
 .f3d-month { font-weight: 600; min-width: 90px; }
 .sw.soil { background: #8c6138; } .sw.drop { background: #4a8cc9; border-radius: 50%; width: 10px; height: 10px; } .sw.drop.bad { background: #e0622a; }
 @media (max-width: 600px) { .f3d-labels { grid-template-columns: 1fr; } }
+
+.f3d-wx { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+.chip { background: var(--bg); border-radius: 999px; padding: 2px 10px; font-size: .8rem; }
+.chip.cold { background: #e3eefc; } .chip.hot { background: #fde7d6; }
+.f3d-lab .mini { font-size: .78rem; color: var(--muted); }
+.f3d-lab .mini.ok { color: #2f6fae; } .f3d-lab .mini.bad { color: #b4501f; }
+.sw.drop.wash { background: #d08a45; } .sw.drop.spray { background: #9fd3ff; } .sw.water { background: rgba(47,143,255,.55); }

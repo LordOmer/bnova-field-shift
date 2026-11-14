@@ -57,7 +57,7 @@
     }
     $("glossary").innerHTML = t("gloss").map(([w, d]) => `<details><summary>${esc(w)}</summary><p>${esc(d)}</p></details>`).join("");
     $("limits").innerHTML = t("limits").map(x => `<li>${x}</li>`).join("");
-    $("f3dLegend").innerHTML = `<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw soil"></i>${t("f3dSoil")}</span><span><i class="sw drop"></i>${t("f3dDropOk")}</span><span><i class="sw drop bad"></i>${t("f3dDropBad")}</span>`;
+    $("f3dLegend").innerHTML = `<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw soil"></i>${t("f3dSoil")}</span><span><i class="sw drop"></i>${t("f3dDropOk")}</span><span><i class="sw drop bad"></i>${t("f3dDropBad")}</span><span><i class="sw drop wash"></i>${t("f3dWash")}</span><span><i class="sw drop spray"></i>${t("f3dSpray")}</span><span><i class="sw water"></i>${t("f3dWater")}</span>`;
     $("f3dPlay").textContent = window.Field3D && window.Field3D.playing ? t("f3dPause") : t("f3dPlayBtn");
     $("tlLegend").innerHTML = `<span><i class="sw main"></i>${t("tl_main")}</span><span><i class="sw cover"></i>${t("tl_cover")}</span><span><i class="sw bare"></i>${t("tl_bare")}</span>`;
     if (lastStatus) setStatus(lastStatus.key, lastStatus.vars, lastStatus.err);
@@ -77,26 +77,46 @@
   const f3dUI = {
     t,
     status: msg => { $("f3dNote").textContent = msg; },
-    terrain: h => {
-      $("f3dNote").textContent = h.flat ? t("f3dFlat") : t("f3dTerrain", { lo: Math.round(h.lo), hi: Math.round(h.hi), x: h.exag });
+    terrain: (h, env) => {
+      const terr = h.flat ? t("f3dFlat") : t("f3dTerrain", { lo: Math.round(h.lo), hi: Math.round(h.hi), x: h.exag });
+      const slope = env.srtm === null ? t("f3dSlopeUser", { cls: t("sl_" + env.soil.slope), p: env.effective })
+        : env.userOverride ? t("f3dSlopeOverride", { cls: t("sl_" + env.soil.slope), p: env.effective, s: env.srtm })
+        : t("f3dSlopeSrtm", { s: env.srtm });
+      const soil = t("f3dSoilNote", { tx: t("tx_" + env.soil.texture), om: t("om_" + env.soil.om).toLowerCase() });
+      $("f3dNote").textContent = `${terr} ${slope} ${soil}`;
     },
-    month: (k, infos) => {
+    month: (k, infos, wx) => {
       const S = f3dStrategies; if (!S) return;
       $("f3dSlider").value = k;
       $("f3dMonth").textContent = t("f3dMonth", { y: Math.floor(k / 12) + 1, m: mon(R.AG[k % 12]) });
-      const lab = (s, info) => `<b>${esc(t("s_" + s.key))}</b> <span class="sc">${s.total}/100</span><br><span class="${info.kind === "bare" ? "bad" : "ok"}">${esc(f3dDescribe(info))}</span>`;
+      const chips = [`<span class="chip">🌧 ${wx.rain} mm</span>`];
+      if (typeof wx.wet === "number") chips.push(`<span class="chip">💧 ${t("f3dWet")} ${wx.wet.toFixed(2)}</span>`);
+      if (wx.frostDays >= 1) chips.push(`<span class="chip cold">❄ ${Math.round(wx.frostDays)} ${t("f3dFrostDays")}</span>`);
+      if (wx.hot) chips.push(`<span class="chip hot">🔥 ${Math.round(wx.tmax)} °C ${t("f3dHottest")}</span>`);
+      if (typeof wx.ndvi === "number") chips.push(`<span class="chip">🛰 MODIS NDVI ${wx.ndvi.toFixed(2)}</span>`);
+      $("f3dWx").innerHTML = chips.join("");
+      const lab = (s, info) => {
+        const extra = [];
+        extra.push(`<span class="mini">${esc(t("f3dCum", { mm: info.cumBare }))}</span>`);
+        if (info.irrigate) extra.push(`<span class="mini ok">💦 ${esc(t("f3dIrr", { mm: info.deficit }))}</span>`);
+        if (info.stress) extra.push(`<span class="mini bad">🥀 ${esc(t("f3dStress", { mm: info.deficit }))}</span>`);
+        return `<b>${esc(t("s_" + s.key))}</b> <span class="sc">${s.total}/100</span><br><span class="${info.kind === "bare" ? "bad" : "ok"}">${esc(f3dDescribe(info))}</span><br>${extra.join(" · ")}`;
+      };
       $("f3dA").innerHTML = lab(S[0], infos[0]);
       $("f3dC").innerHTML = lab(S[1], infos[1]);
     }
   };
-  function draw3d(cmp) {
+  function draw3d(cmp, soil, irrigation) {
     if (!window.Field3D) return;
     const best = cmp.strategies.find(s => s.key === "optimized") || cmp.strategies[1];
     f3dStrategies = [cmp.strategies[0], best];
     const rains = R.AG.map(m => E.precipMm(climate, m - 1));
+    const ex = climate.extra || {};
     window.Field3D.update({
-      terrain: terrainFor(climate), strategies: f3dStrategies, months: R.AG,
-      rainOf: m => E.precipMm(climate, m - 1), maxRain: Math.max(...rains)
+      terrain: terrainFor(climate), strategies: f3dStrategies, months: R.AG, climate,
+      rainOf: m => E.precipMm(climate, m - 1), maxRain: Math.max(...rains),
+      soil, irrigation, srtmSlope: ex.slope ? ex.slope.slope : null,
+      ndvi: ex.ndvi && ex.ndvi.monthly ? ex.ndvi.monthly : null
     });
   }
 
@@ -197,7 +217,7 @@
     drawCalendar(main, rec.window);
     const cmp = R.compareRotations(climate, seq, window.MAIN_CROPS, window.ROTATION_CROPS, { priorities: prios, irrigation, soil });
     drawComparison(cmp, main, prios, irrigation, soil);
-    draw3d(cmp);
+    draw3d(cmp, soil, irrigation);
     drawRecs(main, rec);
     drawTrends();
   }
