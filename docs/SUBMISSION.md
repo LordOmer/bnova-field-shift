@@ -11,7 +11,7 @@
 https://lordomer.github.io/bnova-field-shift/ (public, no login)
 
 ## Short summary (≈100 words)
-Many fields stay bare for months between main crops, and often the same crop is grown every year. Field Shift is a free, phone-friendly web tool that compares a farmer's current 3-year rotation with better options. It combines three NASA datasets, all fetched live: NASA POWER climate and soil wetness (2004–2023), SRTM elevation for slope, and MODIS NDVI to show when local land is bare. On a Nebraska field where the USDA Cropland Data Layer shows corn every year, today's rotation scores ≈46/100; a rye + hairy vetch winter cover raises it to ≈63 and the best rotation found reaches ≈83. In our home region Yalova, Türkiye, the same tool goes ≈25 → ≈65 → ≈81. Every plan explains why it was suggested, gives its evidence and lists what a local expert should check.
+Many fields stay bare for months between main crops, and often the same crop is grown every year. Field Shift is a free, phone-friendly web tool that compares a farmer's current 3-year rotation with better options. It combines three NASA datasets, all fetched live: NASA POWER climate and soil wetness (2004–2023), SRTM elevation for slope, and MODIS NDVI to show when local land is bare. On a Nebraska field where the USDA Cropland Data Layer shows corn every year, today's rotation scores ≈46/100; a rye + hairy vetch winter cover raises it to ≈63 and the best rotation found reaches ≈83. In our home region Yalova, Türkiye, the same tool goes ≈25 → ≈65 → ≈81. Every plan explains why it was suggested, gives its evidence and lists what a local expert should check. A Decision Lab lets the farmer set real limits (water per year, crops they will or must grow) and shows the trade-offs between water, bare soil, nitrogen and climate risk as a Pareto chart.
 
 ## What does it do / how does it work?
 **For the farmer or extension advisor:**
@@ -26,7 +26,8 @@ Many fields stay bare for months between main crops, and often the same crop is 
    - **A. Current rotation**, as the farmer runs it today.
    - **B. Current rotation + cover crops** in every bare window.
    - **C. Best rotations found by the optimizer.** It keeps the farmer's year-1 crop and tests every distinct 3-year rotation (73 with the current crop list, cyclic duplicates removed; silage maize and grain corn count as one crop group) of 10 main crops (wheat, barley, canola, silage maize, grain corn, soybean, grain sorghum, sunflower, chickpea, field tomato; "fallow year" can be entered as the current practice). Every bare window gets the best-fitting of 13 cover crops: vetch + oat, cereal rye, cereal rye + hairy vetch, faba bean, field pea, crimson clover, lentil, mustard, chickpea, cowpea, sorghum-sudangrass, buckwheat and soybean.
-5. **See climate trends for 2004–2023.** Yalova: +0.53 °C per decade, −7.5 frost days per decade, +38 mm rain per decade.
+5. **Set real limits in the Decision Lab.** Max irrigation per year, crops the farmer will not grow, crops they must grow. Plans that break a limit are removed, the best remaining plan is shown, and a Pareto chart shows the trade-offs (see "Decision Lab" below).
+6. **See climate trends for 2004–2023.** Yalova: +0.53 °C per decade, −7.5 frost days per decade, +38 mm rain per decade.
 
 **Scoring (0–100), from 7 sub-scores:**
 | Sub-score | What it measures | Data |
@@ -68,6 +69,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - Static web app: HTML, CSS and plain JavaScript, with no libraries and no server.
 - Charts are hand-drawn SVG.
 - The scoring and optimizer engine is a separate module with no DOM dependency, so it can be tested in Node.js.
+- The Decision Lab (`js/decision.js`) is a pure module too: 11 automated Node tests check the limits, the Pareto rules, that inputs are never changed and that every text exists in English and Turkish; a baseline test checks that the A/B/C/D results stay exactly the same.
 - A Python script (standard library only) downloads NASA POWER data as JSON/CSV for offline analysis.
 
 ## Example results (real app output)
@@ -94,6 +96,20 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - A ≈67.
 - Best found: wheat → chickpea → chickpea (≈86, ≈19 mm irrigation a year). Alternative: wheat → canola → chickpea (≈82, ≈10 mm).
 - Both need almost no irrigation, so the optimizer respects the farmer's water limit and does not push thirsty crops.
+
+## Decision Lab: the farmer's real limits
+The scores answer "what is best?". The Decision Lab answers "what is best **for me**, with the water and crops I actually have?" It filters the 73 rotations the optimizer already scored; it never changes A/B/C/D or their scores.
+- **Hard limits:** max irrigation per year (mm), crops I will not grow, crops I must grow (main crop in at least one year; cover crops do not count).
+- **Water is checked for every year of the 3-year cycle, not the average.** An average can hide one very thirsty year.
+- **Pareto explorer:** among the plans that meet the limits, a plan is Pareto-optimal when no other plan is at least as good on all four goals and better on one: less irrigation, less rain on bare soil, more nitrogen, fewer frost/heat events. The chart (irrigation × rain on bare soil, colour = nitrogen) shows that every gain has a cost.
+- **No fake answers:** if no plan meets the limits, nothing is recommended; the tool says what to relax (e.g. the lowest water limit that works).
+
+**Nebraska, max 100 mm irrigation in every year (real app output, default settings):**
+- The best different rotation C (corn → soybean → soybean with rye/vetch covers) needs 213 / 113 / 113 mm in years 1 / 2 / 3 (average 146 mm, including the cover crops' water), so it is removed.
+- 20 of 73 rotations stay. The best is corn → winter barley → winter canola (≈78/100, 88 / 61 / 61 mm). Today's corn-every-year rotation (88 mm a year) meets the limit.
+- Trade-off: less water means fewer winter covers. The 6 Pareto-optimal plans under the limit leave 43–91 mm of rain a year on bare soil, compared with ≈0 mm for C.
+
+**Yalova, max 100 mm:** silage maize, the farmer's year-1 crop, alone needs ≈296 mm in year 1, so no rotation meets the limit. The tool recommends nothing and says the limit must be at least 296 mm. With 300 mm, 45 rotations are feasible. It also shows that C (maize → canola → chickpea, best overall score) is not Pareto-optimal: maize → barley → chickpea has the same water and bare-soil values and more nitrogen; C ranks first because of its market value.
 
 ## Benefits & impact
 - **Soil health:** the tool puts a number on erosion risk. In the Yalova example, a winter cover crop cuts rain on bare soil from ≈468 to ≈45 mm/yr. Slope from SRTM raises the priority of soil cover where erosion matters most.
@@ -127,6 +143,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 - **Three NASA views of one field:** POWER for climate and soil water, SRTM for slope (erosion weight), and MODIS for when the land around the field is actually green or bare.
 - **Honest trade-offs:** the water model shows that cover crops use stored soil water. The tool does not claim cover crops are free.
 - **Built-in explanations:** why, evidence, benefits, gaps and risks are given for every plan.
+- **Decision Lab:** hard limits checked year by year, plus a 4-goal Pareto front, turn "the best score" into "the best plan within my limits, and what it costs". If nothing fits, the tool says so instead of inventing an answer.
 
 ## How we considered the challenge's factors
 | Challenge factor | How Field Shift addresses it |
@@ -143,6 +160,7 @@ Many fields stay bare for months between main crops, and often the same crop is 
 | Local soil | Texture, slope and organic matter inputs change stored water, weights and risk texts |
 | Crop characteristics | Table of 10 main crops (+ fallow year) and 12 cover crops: season, temperature range, frost tolerance, water need, N-fixation, residue, family |
 | Farmer priorities | Water use, animal feed, nitrogen fixation, erosion, organic matter, market; all change the weights |
+| Farmer constraints | Decision Lab: water limit per year, forbidden / required crops, Pareto trade-offs |
 | Explain why / evidence / benefits / gaps / risks | Required fields on every strategy card |
 | Accessibility | Free, static, phone-friendly, English/Turkish, glossary |
 
@@ -177,8 +195,8 @@ Main-crop calendars, seasonal water needs and flowering heat limits were checked
 
 ## Judging criteria
 - **Impact:** a free, phone-friendly tool that turns NASA data into rotation plans that cut bare-soil exposure (Yalova: ≈468 → ≈45 mm/yr of rain on bare soil) and add nitrogen; scale: Turkey loses ≈642 Mt of soil to erosion per year and has 2.32 million registered farmers; agriculture uses ≈79% of its water.
-- **Creativity:** an optimizer compares "today vs. small change vs. best" and combines climate, terrain and vegetation from three NASA datasets into one explained score.
-- **Validity:** every number traces to a named NASA parameter, the formulas are simple and shown, and the limits (grid size, modeled soil wetness, approximate crop data) are stated in the app.
+- **Creativity:** an optimizer compares "today vs. small change vs. best" and combines climate, terrain and vegetation from three NASA datasets into one explained score; the Decision Lab adds the farmer's hard limits and a Pareto view of the trade-offs.
+- **Validity:** every number traces to a named NASA parameter, the formulas are simple and shown, and the limits (grid size, modeled soil wetness, approximate crop data) are stated in the app. Water limits are checked year by year, impossible requests get no fake answer, and automated tests guard the results.
 - **Relevance:** NASA POWER, SRTM and MODIS are the core of every score, and the tool answers the challenge's question of how farmers can pick rotations for soil health and changing weather.
 - **Presentation:** a bilingual, mobile-friendly interface with a monthly calendar, side-by-side strategy cards and a glossary for non-experts.
 
