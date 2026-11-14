@@ -1,8 +1,10 @@
 # Field Shift – Presentation (max 7 slides, 3–5 min)
 
 Team BNova · NASA Space Apps Challenge 2026 · Yalova
-Slide text in English (judges + submission). Speaker notes (konuşma notu) in Turkish.
-Rules: no NASA logo, flag or emblem on slides. Numbers marked **[check in app]** must be copied from the live demo before presenting.
+
+- Slide text is in English for the judges and the submission. Speaker notes (konuşma notu) are in Turkish.
+- Rules: no NASA logo, flag or emblem on the slides.
+- Numbers come from the app with its defaults: nitrogen + erosion, limited irrigation, loamy soil, gentle slope, medium organic matter. Say "≈", because scores can move by 1–2 points.
 
 Suggested timing: 1) 30 s · 2) 30 s · 3) 75 s · 4) 40 s · 5) 40 s · 6) 30 s · 7) 35 s ≈ 4.5 min
 
@@ -11,104 +13,128 @@ Suggested timing: 1) 30 s · 2) 30 s · 3) 75 s · 4) 40 s · 5) 40 s · 6) 30 s
 ## Slide 1 – The problem
 
 **Bare fields, same crop, changing climate**
-- Many fields stay **bare for months** between main crops (e.g. after silage maize, all winter)
-- Same crop every year → soil loses cover, organic matter and nitrogen; pests build up
-- Climate is shifting: Yalova 2004–2023 → **+0.53 °C / decade, −7.5 frost days / decade**
-- Farmers lack a simple, local, evidence-based way to choose a better rotation
+- Silage maize every year in Yalova → field bare **≈7 months/yr**
+- **≈468 mm of 648 mm** yearly rain falls on bare soil → erosion, nutrient loss
+- Same crop every year → negative nitrogen balance, no pest break
+- Climate is shifting (Yalova 2004–2023): **+0.53 °C / decade, −7.5 frost days / decade, +38 mm rain / decade**
 
 **Konuşma notu:**
-Merhaba, biz BNova. Türkiye'de pek çok tarla iki ana ürün arasında aylarca boş kalıyor. Mesela silajlık mısırdan sonra tarla bütün kış çıplak duruyor; kış yağmuru doğrudan toprağa vuruyor, toprak ve besin kaybı oluyor. Üstüne her yıl aynı ürün ekiliyor, bu da hastalık ve zararlıyı artırıyor. Bir de iklim değişiyor: NASA verisine göre Yalova'da son 20 yılda sıcaklık on yılda yaklaşık yarım derece arttı, don günleri on yılda yedi buçuk gün azaldı. Çiftçinin elinde kendi bölgesine göre "hangi nöbeti yapayım" sorusunu cevaplayan basit bir araç yok.
+Merhaba, biz BNova. Yalova'da her yıl silajlık mısır eken bir çiftçiyi düşünün. Tarla yılda yaklaşık 7 ay boş kalıyor. NASA verisine göre yıllık 648 milimetre yağışın yaklaşık 468 milimetresi çıplak toprağa düşüyor; bu, erozyon ve besin kaybı demek. Her yıl aynı ürün olduğu için azot dengesi eksiye düşüyor ve hastalık döngüsü kırılmıyor. Bir de iklim değişiyor: son 20 yılda Yalova'da sıcaklık on yılda yarım derece arttı, don günleri on yılda yedi buçuk gün azaldı. Çiftçinin elinde "hangi nöbeti yapayım" sorusuna yerel veriyle cevap veren basit bir araç yok.
 
 ---
 
 ## Slide 2 – Our solution: Field Shift
 
 **A free crop rotation planner powered by NASA data**
-- Pick a location → 20 years of **NASA POWER** climate data load automatically
-- Enter your current rotation, priorities and irrigation
+- Pick a location → **NASA climate, terrain and vegetation** data load live
+- Enter your rotation, priorities, irrigation and **your field's soil**
 - Compare **3 strategies over 3 years**: current · current + cover crops · optimizer's best
 - Each plan: **0–100 score**, why, NASA evidence, benefits, gaps, risks
-- Works on any phone browser · English / Turkish · no install, no account
+- Any phone browser · English / Turkish · no install, no account
 
 **Konuşma notu:**
-Çözümümüz Field Shift. Telefondan açılan ücretsiz bir web uygulaması. Konumu seçiyorsunuz, NASA POWER'dan 20 yıllık iklim verisi geliyor. Çiftçi şu anki ekim düzenini, önceliklerini, mesela su tasarrufu, azot, yem ya da gelir, ve sulama imkânı olup olmadığını giriyor. Uygulama üç stratejiyi üç yıllık olarak karşılaştırıyor: bugünkü düzen, aynı düzene örtü bitkisi eklenmiş hali ve optimizasyonun bulduğu en iyi rotasyonlar. Her birinin 0–100 puanı ve gerekçesi var. Türkçe ve İngilizce çalışıyor, kurulum gerektirmiyor.
+Çözümümüz Field Shift: telefondan açılan ücretsiz bir web uygulaması. Konumu seçince NASA'dan iklim, arazi eğimi ve bitki örtüsü verisi canlı geliyor, API anahtarı gerekmiyor. Çiftçi şu anki ekim düzenini, önceliklerini, sulama imkânını ve tarlasının toprağını, yani bünye, eğim ve organik maddeyi giriyor. Uygulama üç stratejiyi üç yıllık karşılaştırıyor: bugünkü düzen, aynı düzene örtü bitkisi eklenmiş hali ve optimizasyonun bulduğu en iyi rotasyon. Her birinin 0–100 puanı ve gerekçesi var.
 
 ---
 
 ## Slide 3 – Demo flow
 
 **Yalova + silage maize every year**
-1. Location: **Yalova** → monthly calendar: rain, temperature, frost days, soil wetness; bare winter months highlighted
-2. Current rotation: **silage maize → silage maize → silage maize**, bare in winter
-3. Rotation comparison:
-   - A. Current: score **[check in app]** – lots of winter rain on bare soil, no pest break
-   - B. + Cover crop (e.g. vetch + oat in winter): score **[check in app]**
-   - C. Optimizer's best (e.g. wheat → chickpea → maize + covers): score **[check in app]**
-4. Open a card: why · evidence · benefits · gaps · risks
-5. Load another location live (e.g. Konya) → different climate, different answer
+1. Location **Yalova** (farmland point) → slope auto-filled from SRTM: **5.1%, gentle**
+2. Monthly calendar: rain, temperature, frost, soil wetness + **MODIS green line** (least green Feb, Jul–Sep)
+3. Rotation comparison: **A ≈29 → B ≈72 → C ≈86**
+4. Open strategy C: why · evidence · benefits · gaps · risks
+5. Load **Konya** live → flat, dry (≈380 mm) → different answer
 
 **Konuşma notu:**
-Şimdi canlı gösterelim. Yalova'yı seçiyoruz; aylık takvimde yağış, sıcaklık, don günü ve kök bölgesi toprak nemi görünüyor, tarlanın boş kaldığı kış ayları işaretli. Çiftçimiz her yıl silajlık mısır ekiyor ve kışın tarla boş. Karşılaştırmada önce mevcut düzenin puanını görüyoruz: kış yağmurunun büyük kısmı çıplak toprağa düşüyor ve aynı ürün art arda geldiği için hastalık kırılması yok. Sadece kışa fiğ-yulaf karışımı eklediğimizde puan yükseliyor; çiftçi ana ürününü değiştirmek zorunda değil. Optimizasyon ise 343 üç yıllık diziyi deneyip en iyilerini öneriyor. Bir karta tıklayınca neden önerildiğini, NASA'dan gelen kanıt sayılarını, faydaları, bilinmeyenleri ve uzmana sorulması gereken riskleri görüyoruz. Son olarak Konya'yı canlı yüklüyoruz; iklim farklı olduğu için öneri de değişiyor. (Puanları sunumdan önce uygulamadan kontrol et.)
+Canlı gösteriyoruz. Yalova'yı seçiyoruz; SRTM yükseklik verisinden eğim otomatik geliyor: yüzde 5,1, yani hafif eğimli. Aylık takvimde yağış, sıcaklık, don ve kök bölgesi toprak nemi var. Yeşil çizgi MODIS uydusundan bitki örtüsü: Şubat ve Temmuz–Eylül en az yeşil aylar, yani hasattan sonra toprak büyük ihtimalle çıplak. Mevcut düzen, yani her yıl mısır, 29 puan alıyor. Sadece kışa fiğ-yulaf eklemek puanı 72'ye çıkarıyor. Optimizasyonun en iyi önerisi 86 puan. Bu kartı açınca neden önerildiğini, NASA kanıtlarını, faydaları, bilinmeyenleri ve riskleri görüyoruz. Sonra Konya'yı canlı yüklüyoruz: düz ve kurak, yağış 380 milimetre civarı, sonuç da farklı.
 
 ---
 
 ## Slide 4 – NASA data & method
 
-**NASA POWER (power.larc.nasa.gov) – monthly, 2004–2023, Agroclimatology**
-- T2M, T2M_MAX, T2M_MIN · PRECTOTCORR · FROST_DAYS · GWETROOT, GWETTOP · EVPTRNS · RH2M · solar radiation
-- Optimizer: all **343** three-year sequences of 7 main crops; each bare window filled with the best of **12 cover crops** for the local climate
-- Score from 7 parts: soil cover · nitrogen · organic matter · water (need − NASA rain) · pest break · climate risk (frost, heat) · income
-- Farmer priorities and irrigation change the weights
+**Three NASA datasets, fetched live in the browser**
+- **NASA POWER** (2004–2023): temperature, max/min, rain, frost days, root-zone soil wetness → climate fit, irrigation need, stored soil water
+- **SRTM elevation** (via Open-Elevation): slope from 5 points → steep slope raises erosion weight
+- **MODIS Terra NDVI** (MOD13Q1, 250 m, via ORNL DAAC): least-green months = likely bare soil
+- Optimizer: keeps year-1 crop, tests **43** distinct 3-year rotations of 7 crops, best of **12 cover crops** in every bare window
+- 7 sub-scores: soil cover · nitrogen · organic matter · water · pest break · climate risk · income
 
 **Konuşma notu:**
-Verinin çekirdeği NASA POWER. Agroklimatoloji topluluğundan aylık nokta verisi alıyoruz: sıcaklık, en yüksek ve en düşük sıcaklık, düzeltilmiş yağış, don günü, toprak nemi, buharlaşma-terleme, nem ve güneş ışınımı. Yalova verisi uygulamaya gömülü; diğer konumlar API'den canlı ve anahtarsız çekiliyor. Yöntemde endüstri mühendisliği yaklaşımını kullandık: yedi ana ürünün tüm üç yıllık dizileri, yani 343 dizi deneniyor ve her boş pencereye 12 örtü bitkisinden iklime en uygun olanı yerleştiriliyor. Puan yedi alt puandan oluşuyor; örneğin su puanı, ürünün su ihtiyacından NASA yağışını çıkararak bulunan sulama açığı. Çiftçinin öncelikleri ve sulama imkânı ağırlıkları değiştiriyor.
+Üç NASA veri seti kullanıyoruz ve hepsi tarayıcıdan anahtarsız çekiliyor:
+- NASA POWER'dan 20 yıllık sıcaklık, yağış, don günü ve kök bölgesi toprak nemini alıyoruz. Toprak neminden ekim anında toprakta depolanan suyu tahmin ediyoruz. Kapasite toprak bünyesine bağlı: kumlu 70, tınlı 150, killi 200 milimetre.
+- SRTM yükseklik verisinden eğimi hesaplıyoruz; dik arazide erozyon ağırlığı artıyor.
+- MODIS uydusunun NDVI verisi bölgede toprağın ne zaman çıplak kaldığını gösteriyor.
+
+Optimizasyonda endüstri mühendisliği yaklaşımını kullandık: çiftçinin ilk yıl ürünü sabit kalıyor, 43 farklı üç yıllık rotasyon deneniyor ve her boş pencereye 12 örtü bitkisinden en uygunu yerleşiyor. Su puanı, yıllık sulama ihtiyacının çiftçinin sağlayabildiği suya oranından hesaplanıyor.
 
 ---
 
-## Slide 5 – Example result (Yalova)
+## Slide 5 – Results
 
-**From "maize every year" to a rotation with cover**
-| Strategy | Score | Key evidence (NASA) |
+**Yalova, silage maize every year**
+| Strategy | Score | Evidence |
 |---|---|---|
-| A. Maize ×3, bare winter | **[check]** | ~420 mm winter rain on bare soil **[check]** |
-| B. Maize ×3 + vetch/oat in winter | **[check]** | Winter frost days fit a frost-tolerant cover |
-| C. Optimizer's best | **[check]** | Pest break + legume N + lower irrigation gap |
-- Smallest step (B) already protects the soil and adds nitrogen
-- Trend: fewer frost days → wider window for autumn-sown crops
+| A. Maize ×3, bare winter | **≈29** | ≈468 mm rain on bare soil · irrigation ≈311 mm/yr · N −3 |
+| B. Maize ×3 + vetch/oat cover | **≈72** | rain on bare soil ≈45 mm/yr |
+| C. Maize → sunflower → spring chickpea + vetch/oat | **≈86** | N +1.7 · irrigation ≈194 mm/yr · pest break |
+- C risks flagged: March frost for spring chickpea, July heat spike (35 °C)
+- **Konya**: A ≈26 → B ≈68 → C ≈75
+- **Wheat, no irrigation (Yalova)**: best = wheat → chickpea → chickpea (+ vetch/oat) → almost no irrigation needed
 
 **Konuşma notu:**
-Yalova örneğinde sonuç şöyle: Sadece mısır ekilen ve kışın boş kalan düzende, Ekim–Mart arasındaki yaklaşık 420 milimetre yağış çıplak toprağa düşüyor. Kışa fiğ-yulaf eklemek, yani en küçük değişiklik bile toprağı koruyor ve baklagil sayesinde azot katıyor. Optimizasyonun önerdiği rotasyon ise buna ek olarak ürün ailesini değiştirerek hastalık döngüsünü kırıyor ve sulama açığını azaltıyor. Ayrıca don günlerinin azalması, sonbaharda ekilen ürünler için pencerenin genişlediğini gösteriyor. (Tablodaki puanları ve yağış değerini uygulamadan kopyala.)
+Sonuçlar:
+- Yalova'da her yıl mısır ekildiğinde çıplak toprağa düşen yağış yaklaşık 468 milimetre, sulama ihtiyacı yılda 311 milimetre, azot dengesi eksi 3.
+- Kışa fiğ-yulaf eklenince çıplak toprağa düşen yağış 45 milimetreye iniyor. Yani en küçük adım bile büyük fark yaratıyor.
+- En iyi rotasyon mısır, ayçiçeği, ilkbahar nohudu: azot dengesi artıya geçiyor, sulama 194 milimetreye iniyor, ürün ailesi her yıl değişiyor. Araç riskleri de yazıyor: nohut için Mart donu ve Temmuz'daki 35 derecelik sıcak dalgası.
+- Konya'da puanlar 26'dan 68'e ve 75'e çıkıyor.
+- Sulaması olmayan bir buğday çiftçisine araç neredeyse hiç sulama istemeyen buğday–nohut rotasyonunu öneriyor. Yani su kısıtına saygı gösteriyor.
 
 ---
 
 ## Slide 6 – Honest about limits
 
 **Supports, does not replace, local expertise**
-- NASA POWER grid ≈ 0.5° × 0.625° (**≈ 50 km**) → regional climate, not one field
-- GWETROOT is **modeled** (MERRA-2 reanalysis), not a direct satellite reading
-- Crop parameters are **approximate rules of thumb** → need expert validation
-- Not yet included: soil texture, pH, slope, local pests, real prices
-- Scores compare options; they are **not yield forecasts**
-- Every card lists its information gaps and risks for expert review
+- NASA POWER grid **≈50 km** → regional climate, not one field
+- Root-zone soil wetness is **modeled** (MERRA-2), not a direct satellite reading
+- MODIS 250 m over 2×2 km **mixes many fields**; one year (2025) only
+- SRTM slope from 5 points → approximate, farmer can override
+- Crop parameters are **approximate rules of thumb** → expert validation needed
+- No soil pH, local pests or real prices · scores compare options, **not yield forecasts**
 
 **Konuşma notu:**
-Verinin sınırlarını açıkça söylemek istiyoruz. NASA POWER yaklaşık 50 kilometrelik bir ızgarada; yani tek bir tarlayı değil bölgenin iklimini anlatıyor. Toprak nemi değeri olan GWETROOT doğrudan uydu ölçümü değil, MERRA-2 modelinden geliyor. Ürün parametreleri yaklaşık değerler ve bir ziraat uzmanı tarafından doğrulanmalı. Toprak yapısı, pH, eğim, yerel zararlılar ve fiyatlar henüz yok. Puanlar seçenekleri birbirine göre karşılaştırıyor, verim tahmini değil. Bu yüzden her kartta bilinmeyenler ve uzmana sorulacak riskler yazıyor. Araç uzmanın yerine geçmiyor, ona destek oluyor.
+Verinin sınırlarını açıkça söylüyoruz:
+- NASA POWER yaklaşık 50 kilometrelik ızgarada, yani tarlayı değil bölgeyi anlatıyor.
+- Kök bölgesi toprak nemi doğrudan uydu ölçümü değil, MERRA-2 modelinden geliyor.
+- MODIS 250 metre çözünürlükte ve 2 kilometrelik pencerede pek çok tarlayı karıştırıyor; tek bir tarlayı değil bölgedeki genel deseni gösteriyor.
+- Eğim yaklaşık bir değer ve çiftçi değiştirebiliyor.
+- Ürün parametreleri yaklaşık ve bir ziraat uzmanı tarafından doğrulanmalı.
+- Toprak pH'ı, yerel zararlılar ve fiyatlar yok. Puanlar seçenekleri karşılaştırıyor; verim tahmini değil.
+
+Her kartta bilinmeyenler ve uzmana sorulacak riskler yazıyor. Araç uzmanın yerine geçmiyor, ona destek oluyor.
 
 ---
 
 ## Slide 7 – Impact, next steps & team
 
 **Impact**
-- Free, phone-friendly, bilingual, works for any coordinate NASA POWER covers
-- Less bare soil, more nitrogen from legumes, water-aware crop choice
+- Free, phone-friendly, bilingual, works almost anywhere on Earth
+- Less bare soil, more nitrogen from legumes, rotations that fit the farmer's water
+- [TEAM: add sourced number, e.g. TÜİK number of farm holdings / erosion figure]
 
 **Next steps**
 - Validate crop data with agronomists and the provincial agriculture directorate · pilot farms in Yalova
-- Add NASA **SMAP** soil moisture, **GPM IMERG** extreme rain, **SRTM** slope, **Landsat / Sentinel-2 NDVI** bare-field detection
+- Add **SMAP** soil moisture, **GPM IMERG** extreme rain, **Sentinel-2 / Landsat** field-scale NDVI
 
 **Team BNova:** Berrak · Nisa Nur (Industrial Eng.: data analysis, optimization) · Ömer (Computer Eng.: software, web)
 lordomer.github.io/bnova-field-shift
 *AI use declared: Claude (Anthropic) assisted with code, data scripts and text drafts; reviewed by the team. No AI images.*
 
 **Konuşma notu:**
-Etkiye gelince: Field Shift ücretsiz, telefondan açılıyor, Türkçe ve İngilizce, ve NASA POWER'ın veri verdiği dünyadaki her noktada çalışıyor. Amacımız daha az çıplak toprak, baklagillerle daha fazla doğal azot ve suya göre bilinçli ürün seçimi. Sonraki adımlarımız: ürün verilerini ziraat uzmanları ve İl Tarım Müdürlüğü ile doğrulamak, Yalova'da birkaç çiftlikte denemek, ardından SMAP uydu toprak nemi, GPM aşırı yağış, SRTM eğim ve Landsat/Sentinel-2 ile boş tarla tespiti eklemek. Ekibimiz: Endüstri Mühendisliğinden Berrak ve Nisa Nur, veri analizi ve optimizasyon; Bilgisayar Mühendisliğinden Ömer, yazılım ve web. Yapay zekâ kullanımımızı beyan ediyoruz: Claude kod, veri betikleri ve metin taslaklarında yardımcı oldu, tüm sonuçları ekip kontrol etti; YZ görseli kullanmadık. Teşekkürler, sorularınızı bekliyoruz.
+Etkiye gelince: Field Shift ücretsiz, telefondan açılıyor, Türkçe ve İngilizce, ve dünyanın neredeyse her yerinde çalışıyor. Amacımız daha az çıplak toprak, baklagillerle daha fazla doğal azot ve çiftçinin suyuna uygun rotasyonlar. (Buraya kaynaklı bir Türkiye istatistiği ekleyin.)
+
+Sonraki adımlar: ürün verilerini ziraat uzmanları ve İl Tarım Müdürlüğü ile doğrulamak, Yalova'da birkaç çiftlikte denemek, ardından SMAP toprak nemi, GPM aşırı yağış ve Sentinel-2 ile tarla ölçeğinde bitki örtüsü eklemek.
+
+Ekibimiz: Endüstri Mühendisliğinden Berrak ve Nisa Nur, veri analizi ve optimizasyon; Bilgisayar Mühendisliğinden Ömer, yazılım ve web.
+
+Yapay zekâ kullanımımızı beyan ediyoruz: Claude kod, veri betikleri ve metin taslaklarında yardımcı oldu, tüm sonuçları ekip kontrol etti; YZ görseli kullanmadık. Teşekkürler, sorularınızı bekliyoruz.
