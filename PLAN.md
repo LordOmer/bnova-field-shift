@@ -32,7 +32,7 @@ Türkiye'de birçok tarla ana ürünler arasında aylarca boş kalıyor ve çift
 ## Jürinin muhtemel soruları
 - Hangi kısım gerçek, hangisi temsili? → İklim verisi gerçek NASA; ürün parametreleri yaklaşık, doğrulanacak.
 - Verinin sınırları? → POWER yaklaşık 50 km çözünürlükte; tarla ölçeği değil, bölge ölçeği.
-- YZ'yi nerede kullandınız? → Kod ve metin taslağında Claude; sonuçları ekip kontrol etti.
+- YZ'yi nerede kullandınız? → Web sitesinin kodlanması ve veri çekme işlemleri Claude (Anthropic) yardımıyla hazırlandı, takım kontrol etti; YZ görseli yok.
 
 ## Gönderim kontrol listesi
 - [ ] Tüm üyeler TARSA'da onaylı ve Yalova'ya kayıtlı

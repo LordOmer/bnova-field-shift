@@ -127,8 +127,8 @@ Her kartta bilinmeyenler ve uzmana sorulacak riskler yazıyor. Araç uzmanın ye
 - Add **SMAP** soil moisture, **GPM IMERG** extreme rain, **Sentinel-2 / Landsat** field-scale NDVI
 
 **Team TARSA:** Berrak · Nisa Nur (Industrial Eng.: data analysis, optimization) · Ömer (Computer Eng.: software, web)
-lordomer.github.io/bnova-field-shift
-*AI use declared: Claude (Anthropic) assisted with code, data scripts and text drafts; reviewed by the team. No AI images.*
+lordomer.github.io/tarsa-field-shift
+*AI usage: Website coding and data retrieval were prepared with the help of Claude (Anthropic) and checked by the team. No AI visualization was used.*
 
 **Konuşma notu:**
 Etkiye gelince: Field Shift ücretsiz, telefondan açılıyor, Türkçe ve İngilizce, ve dünyanın neredeyse her yerinde çalışıyor. Amacımız daha az çıplak toprak, baklagillerle daha fazla doğal azot ve çiftçinin suyuna uygun rotasyonlar. (Buraya kaynaklı bir Türkiye istatistiği ekleyin.)
@@ -137,4 +137,4 @@ Sonraki adımlar: ürün verilerini ziraat uzmanları ve İl Tarım Müdürlüğ
 
 Ekibimiz: Endüstri Mühendisliğinden Berrak ve Nisa Nur, veri analizi ve optimizasyon; Bilgisayar Mühendisliğinden Ömer, yazılım ve web.
 
-Yapay zekâ kullanımımızı beyan ediyoruz: Claude kod, veri betikleri ve metin taslaklarında yardımcı oldu, tüm sonuçları ekip kontrol etti; YZ görseli kullanmadık. Teşekkürler, sorularınızı bekliyoruz.
+YZ kullanımı: Web sitesinin kodlanması ve veri çekme işlemleri Claude (Anthropic) yardımıyla hazırlandı ve takım tarafından kontrol edildi. Yapay zekâ ile görsel üretilmedi. Teşekkürler, sorularınızı bekliyoruz.

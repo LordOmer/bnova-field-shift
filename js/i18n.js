@@ -102,7 +102,7 @@
         "<b>Crop characteristics</b> were checked against FAO Crop Water Information, USDA-NASS planting/harvest dates, USDA SARE <i>Managing Cover Crops Profitably</i>, TAGEM and university extension sources (see docs/crop_check_main.md and docs/crop_check_cover.md in the repository). They are averages, not certified advice for a specific variety.",
         "<b>Scores</b> are relative: they compare options for the same place, they do not predict yield or profit. Weights: 8 sub-scores, each weight raised when you tick a priority or have little irrigation water.",
         "<b>Not included yet:</b> measured soil type and pH, field-scale imagery (Landsat/Sentinel-2), rainfall extremes (GPM IMERG), SMAP soil moisture, local prices and subsidies.",
-        "<b>AI use:</b> code, data scripts and text drafts were written with help from Claude (Anthropic) and reviewed by the team. No AI images are used.",
+        "<b>AI usage:</b> Website coding and data retrieval were prepared with the help of Claude (Anthropic) and checked by the team. No AI visualization was used.",
         "Built by team TARSA during NASA Space Apps Challenge 2026, Yalova. No NASA endorsement implied."
       ],
       st_showing: "Showing {name} ({src}).",
@@ -280,7 +280,7 @@
         "<b>Ürün özellikleri</b> FAO bitki su bilgileri, USDA-NASS ekim/hasat tarihleri, USDA SARE <i>Managing Cover Crops Profitably</i>, TAGEM ve üniversite yayım kaynaklarıyla kontrol edildi (depoda docs/crop_check_main.md ve docs/crop_check_cover.md). Ortalamalardır; belirli bir çeşit için onaylı tavsiye değildir.",
         "<b>Skorlar</b> görecelidir: aynı yer için seçenekleri karşılaştırır, verim ya da kâr tahmini yapmaz. Ağırlıklar: 8 alt skor; öncelik işaretlediğinde ya da sulama suyun az olduğunda ilgili ağırlık artar.",
         "<b>Henüz dahil değil:</b> ölçülmüş toprak tipi ve pH, tarla ölçeğinde görüntü (Landsat/Sentinel-2), aşırı yağış (GPM IMERG), SMAP toprak nemi, yerel fiyatlar ve destekler.",
-        "<b>YZ kullanımı:</b> kod, veri betikleri ve metin taslakları Claude (Anthropic) yardımıyla yazıldı ve takım tarafından kontrol edildi. YZ görseli kullanılmadı.",
+        "<b>YZ kullanımı:</b> Web sitesinin kodlanması ve veri çekme işlemleri Claude (Anthropic) yardımıyla hazırlandı ve takım tarafından kontrol edildi. Yapay zekâ ile görsel üretilmedi.",
         "TARSA takımı tarafından NASA Space Apps Challenge 2026 Yalova etkinliğinde geliştirildi. NASA onayı ima edilmez."
       ],
       st_showing: "{name} gösteriliyor ({src}).",

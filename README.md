@@ -77,4 +77,4 @@ Open `index.html` in a browser, or run `node .dev-server.cjs` and open http://lo
 Berrak, Nisa Nur (Industrial Engineering), Ömer (Computer Engineering).
 
 ## Tools & AI disclosure
-Plain HTML/CSS/JavaScript; the only external library is [three.js](https://threejs.org/) r128 (MIT licence, from cdnjs) for the 3D view. Python standard library and Node.js scripts for data downloads. An AI assistant (Claude, Anthropic) helped write code, fetch and summarize data, and draft text. All results were reviewed by the team. No AI-generated images. No NASA logos are used; no NASA endorsement implied.
+Plain HTML/CSS/JavaScript; the only external library is [three.js](https://threejs.org/) r128 (MIT licence, from cdnjs) for the 3D view. Python standard library and Node.js scripts for data downloads. **AI usage:** Website coding and data retrieval were prepared with the help of Claude (Anthropic) and checked by the team. No AI visualization was used. No NASA logos are used; no NASA endorsement implied.

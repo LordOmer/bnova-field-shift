@@ -8,7 +8,7 @@
 **Field Shift – NASA-data crop rotation planner**
 
 ## Project link
-https://lordomer.github.io/bnova-field-shift/ (public, no login)
+https://lordomer.github.io/tarsa-field-shift/ (public, no login)
 
 ## Short summary (≈100 words)
 Many fields stay bare for months between main crops, and often the same crop is grown every year. Field Shift is a free, phone-friendly web tool that compares a farmer's current 3-year rotation with better options. It combines three NASA datasets, all fetched live: NASA POWER climate and soil wetness (2004–2023), SRTM elevation for slope, and MODIS NDVI to show when local land is bare. On a Nebraska field where the USDA Cropland Data Layer shows corn every year, today's rotation scores ≈46/100; a rye + hairy vetch winter cover raises it to ≈63 and the best rotation found reaches ≈83. In our home region Yalova, Türkiye, the same tool goes ≈25 → ≈65 → ≈81. Every plan explains why it was suggested, gives its evidence and lists what a local expert should check. A Decision Lab lets the farmer set real limits (water per year, crops they will or must grow) and shows the trade-offs between water, bare soil, nitrogen and climate risk as a Pareto chart.
@@ -134,7 +134,7 @@ The scores answer "what is best?". The Decision Lab answers "what is best **for 
   - Open-Elevation API (SRTM-based elevation).
   - ORNL DAAC MODIS web service (MOD13Q1 NDVI).
 - **Hosting:** GitHub Pages (static).
-- **Tools:** Visual Studio Code, Git/GitHub, web browsers, Node.js (engine tests), Claude (Anthropic) as an AI coding and writing assistant (see AI section).
+- **Tools:** Visual Studio Code, Git/GitHub, web browsers, Node.js (engine tests), Claude (Anthropic) as an AI assistant for website coding and data retrieval (see AI section).
 - **Hardware:** team laptops and phones (mobile testing). No special hardware.
 
 ## Creativity
@@ -249,13 +249,8 @@ POWER combines satellite observations with model/reanalysis products (e.g. MERRA
 - All crop and soil parameters in the app are approximate and labelled as such. They are not taken from a single study and must be validated locally.
 
 ## Use of Artificial Intelligence
-- We used **Claude (Anthropic)** as an AI assistant during the hackathon to help:
-  - write and debug code: the web app, the scoring and optimizer engine, and the NASA POWER / SRTM / MODIS data access;
-  - summarize data;
-  - draft texts: README, this submission and the slide text.
-- The team reviewed, tested and edited all AI-assisted output and is responsible for the final result.
+- **AI usage:** Website coding and data retrieval were prepared with the help of Claude (Anthropic) and checked by the team. No AI visualization was used.
 - Crop parameters were drafted as approximate rules of thumb and are marked for expert validation.
-- **No AI-generated images, video or audio** are used.
 - No NASA logo, flag or emblem is used.
 
 ## Team TARSA
