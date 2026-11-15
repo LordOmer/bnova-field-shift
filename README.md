@@ -2,7 +2,7 @@
 
 **NASA Space Apps Challenge 2026 · Yalova, Turkey · Challenge: [Field Shift: Adapting Farms with NASA Data](https://www.spaceappschallenge.org/2026/challenges/adapting-farms-with-nasa-data/)**
 
-Live app: https://lordomer.github.io/bnova-field-shift/
+Live app: https://lordomer.github.io/tarsa-field-shift/
 
 Many fields stay bare for months between main crops, and the same crop is often grown year after year. Bare soil loses topsoil and nutrients; monoculture builds up pests and drains nitrogen. Field Shift helps farmers **compare 3-year crop rotations** for their own location with NASA Earth observation data, their soil and their priorities. It is decision support, not a prescription.
 
